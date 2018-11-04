@@ -2,6 +2,8 @@
 Wallpaper with Cloud Firebase 
 <h4>1)Make sure to create firebase project</h4>
 <h4>2)download google-services.json in app folder.</h4>
+<h4>3)wallpapers(collection)->1(documents)(category number)->1(collection)->auto_id(documents)->url(field)contains imgurl......
+
 
 ### Show some :heart: and star the repo to support the project
 
