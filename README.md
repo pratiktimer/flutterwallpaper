@@ -2,7 +2,7 @@
 Wallpaper with Cloud Firebase 
 <h4>1)Make sure to create firebase project</h4>
 <h4>2)download google-services.json in app folder.</h4>
-Wallpaper App
+
 ### Show some :heart: and star the repo to support the project
 
 
