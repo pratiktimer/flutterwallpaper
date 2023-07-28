@@ -26,6 +26,17 @@ class WallpaperEntity extends Equatable {
 
   @override
   List<Object?> get props {
-    return [id, landscape, medium, original, potrait, photographerUrl];
+    return [
+      id,
+      landscape,
+      medium,
+      original,
+      potrait,
+      photographerUrl,
+      large,
+      large2x,
+      photographer,
+      tiny
+    ];
   }
 }
