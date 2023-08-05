@@ -9,8 +9,8 @@ part 'color_category_dto.g.dart';
 class ColorCategoryDTO extends ColorCategoryEntity {
   const ColorCategoryDTO({required super.name, required super.hexValue});
   factory ColorCategoryDTO.fromDocument(DocumentSnapshot document) {
-    final _data = document.data() as Map<String, dynamic>;
-    return ColorCategoryDTO.fromJson(_data);
+    final data = document.data() as Map<String, dynamic>;
+    return ColorCategoryDTO.fromJson(data);
   }
 
   Map<String, dynamic> toDocument() {

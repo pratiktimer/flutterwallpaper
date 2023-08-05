@@ -14,3 +14,7 @@ class DataSuccess<T> extends DataState<T> {
 class DataFailed<T> extends DataState<T> {
   const DataFailed(CustomException error) : super(error: error);
 }
+
+class DataLoading<T> extends DataState<T> {
+  const DataLoading() : super();
+}

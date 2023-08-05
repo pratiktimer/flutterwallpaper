@@ -1,4 +1,5 @@
 import 'package:equatable/equatable.dart';
+import 'package:flutterwallpaper/core/constants/constants.dart';
 
 class WallpaperEntity extends Equatable {
   final double? id;
@@ -11,6 +12,26 @@ class WallpaperEntity extends Equatable {
   final String? large2x;
   final String? photographer;
   final String? tiny;
+
+  String get imageUrl => potrait?.isNotEmpty == true
+      ? potrait!
+      : large2x?.isNotEmpty == true
+          ? large2x!
+          : large?.isNotEmpty == true
+              ? large!
+              : original?.isNotEmpty == true
+                  ? original!
+                  : FlutteryConstant.defaultUrl;
+
+  String get listimageUrl => medium?.isNotEmpty == true
+      ? medium!
+      : tiny?.isNotEmpty == true
+          ? tiny!
+          : original?.isNotEmpty == true
+              ? original!
+              : large?.isNotEmpty == true
+                  ? large!
+                  : FlutteryConstant.defaultUrl;
 
   const WallpaperEntity(
       {required this.id,

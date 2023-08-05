@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:flutterwallpaper/core/resources/data_state.dart';
 import 'package:flutterwallpaper/core/util/color_converter.dart';
-import 'package:flutterwallpaper/main.dart';
+import 'package:flutterwallpaper/presentation/home/wallpapers_page.dart';
+import 'package:flutterwallpaper/presentation/providers/wallpaper_repository_provider.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 import '../../domain/entities/color_category.dart';
@@ -22,7 +24,10 @@ class ColorsConatiner extends HookConsumerWidget {
         future: wallpaperRepository.fetchColorCategories(),
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
-            return const CircularProgressIndicator();
+            return Center(
+              child: SpinKitSpinningLines(
+                  color: Theme.of(context).primaryColor, size: 50.0),
+            );
           } else if (snapshot.hasError) {
             return Text('Error: ${snapshot.error}');
           } else {
@@ -35,17 +40,29 @@ class ColorsConatiner extends HookConsumerWidget {
                 scrollDirection: Axis.horizontal,
                 itemCount: wallpaperList?.length ?? 0,
                 itemBuilder: (context, index) {
-                  String? imageUrl = wallpaperList?[index].name ?? "pexels";
                   return Padding(
                     padding: const EdgeInsets.all(8.0),
-                    child: Container(
-                      decoration: BoxDecoration(
-                        color: wallpaperList?[index].hexValue.toColor(),
-                        borderRadius:
-                            BorderRadius.circular(8), // Rounded corners
+                    child: GestureDetector(
+                      onTap: () => {
+                        // Navigate to the DetailScreen using MaterialPageRoute
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (_) => WallaperListPage(
+                                  page: 1,
+                                  category:
+                                      wallpaperList![index].name ?? "Biker"),
+                            )),
+                      },
+                      child: Container(
+                        decoration: BoxDecoration(
+                          color: wallpaperList?[index].hexValue.toColor(),
+                          borderRadius:
+                              BorderRadius.circular(8), // Rounded corners
+                        ),
+                        width: 60,
+                        height: 60,
                       ),
-                      width: 60,
-                      height: 60,
                     ),
                   );
                 },

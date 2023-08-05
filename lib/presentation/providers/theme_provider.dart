@@ -10,8 +10,8 @@ final themeProvider = ChangeNotifierProvider<ThemeProvider>((ref) {
 class ThemeProvider with ChangeNotifier {
   ThemeMode selectedThemeMode = ThemeMode.system;
 
-  setSelectedThemeMode(ThemeMode _themeMode) {
-    selectedThemeMode = _themeMode;
+  setSelectedThemeMode(ThemeMode themeMode) {
+    selectedThemeMode = themeMode;
     notifyListeners();
   }
 }

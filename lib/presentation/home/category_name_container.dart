@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:flutterwallpaper/core/resources/data_state.dart';
 import 'package:flutterwallpaper/domain/entities/category_name.dart';
-import 'package:flutterwallpaper/main.dart';
+import 'package:flutterwallpaper/presentation/home/wallpapers_page.dart';
+import 'package:flutterwallpaper/presentation/providers/wallpaper_repository_provider.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 class CategoryNamesContainer extends HookConsumerWidget {
@@ -19,7 +21,8 @@ class CategoryNamesContainer extends HookConsumerWidget {
         future: wallpaperRepository.fetchNameCategories(),
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
-            return const CircularProgressIndicator();
+            return SpinKitSpinningLines(
+                color: Theme.of(context).primaryColor, size: 50.0);
           } else if (snapshot.hasError) {
             return Text('Error: ${snapshot.error}');
           } else {
@@ -33,13 +36,29 @@ class CategoryNamesContainer extends HookConsumerWidget {
                 itemCount: wallpaperList?.length ?? 0,
                 itemBuilder: (context, index) {
                   String? nameCategory = wallpaperList?[index].name ?? "pexels";
-                  return Card(
-                    child: Center(
+                  return GestureDetector(
+                    onTap: () => {
+                      // Navigate to the DetailScreen using MaterialPageRoute
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (_) => WallaperListPage(
+                                page: 1,
+                                category:
+                                    wallpaperList![index].name ?? "Biker"),
+                          )),
+                    },
+                    child: Card(
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(5.0),
+                      ),
                       child: Padding(
                         padding: const EdgeInsets.all(8.0),
-                        child: Text(
-                          nameCategory,
-                          style: Theme.of(context).textTheme.titleMedium,
+                        child: Center(
+                          child: Text(
+                            nameCategory,
+                            style: Theme.of(context).textTheme.titleMedium,
+                          ),
                         ),
                       ),
                     ),

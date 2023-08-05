@@ -12,8 +12,8 @@ class CategoryDTO extends CategoryeEntity {
       {required super.id, required super.name, required super.url});
 
   factory CategoryDTO.fromDocument(DocumentSnapshot document) {
-    final _data = document.data() as Map<String, dynamic>;
-    return CategoryDTO.fromJson(_data);
+    final data = document.data() as Map<String, dynamic>;
+    return CategoryDTO.fromJson(data);
   }
 
   Map<String, dynamic> toDocument() {

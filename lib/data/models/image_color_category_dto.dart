@@ -12,8 +12,8 @@ class ImageColorCategoryDTO extends ImageColorCategoryEntity {
       {required super.name, required super.hexValue, required super.imageUrl});
 
   factory ImageColorCategoryDTO.fromDocument(DocumentSnapshot document) {
-    final _data = document.data() as Map<String, dynamic>;
-    return ImageColorCategoryDTO.fromJson(_data);
+    final data = document.data() as Map<String, dynamic>;
+    return ImageColorCategoryDTO.fromJson(data);
   }
 
   Map<String, dynamic> toDocument() {

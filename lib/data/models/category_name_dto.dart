@@ -10,8 +10,8 @@ class CategoryNameDTO extends CategoryNameEntity {
   const CategoryNameDTO({required super.name});
 
   factory CategoryNameDTO.fromDocument(DocumentSnapshot document) {
-    final _data = document.data() as Map<String, dynamic>;
-    return CategoryNameDTO.fromJson(_data);
+    final data = document.data() as Map<String, dynamic>;
+    return CategoryNameDTO.fromJson(data);
   }
 
   Map<String, dynamic> toDocument() {

@@ -1,8 +1,5 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
-import 'package:flutterwallpaper/data/data_sources/remote/wallpaper_service.dart';
-import 'package:flutterwallpaper/data/repository/wallpaper_repository_impl.dart';
-import 'package:flutterwallpaper/domain/repository/wallpaper_repository.dart';
 import 'package:flutterwallpaper/firebase_options.dart';
 import 'package:flutterwallpaper/injection_container.dart';
 import 'package:flutterwallpaper/presentation/home/category_name_container.dart';
@@ -43,47 +40,39 @@ class MyApp extends HookConsumerWidget {
       debugShowCheckedModeBanner: false,
       theme: buildLightTheme(),
       darkTheme: buildDarkTheme(),
-      home: SafeArea(
-        child: Scaffold(
-          body: SingleChildScrollView(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              mainAxisAlignment: MainAxisAlignment.start,
-              children: <Widget>[
-                SizedBox(
-                  height: 30,
-                ),
-                CategoryNamesContainer(),
-                SizedBox(
-                  height: 30,
-                ),
-                ColorsConatiner(),
-                SizedBox(
-                  height: 30,
-                ),
-                ImageColorConatiner(),
-                SizedBox(
-                  height: 10,
-                ),
-                Text(
-                  "Recommend",
-                  style: Theme.of(context).textTheme.titleLarge,
-                ),
-                SizedBox(
-                  height: 10,
-                ),
-                CategoryContainer()
-              ],
-            ),
+      home: const Scaffold(
+        body: SingleChildScrollView(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            mainAxisAlignment: MainAxisAlignment.start,
+            children: <Widget>[
+              SizedBox(
+                height: 40,
+              ),
+              CategoryNamesContainer(),
+              SizedBox(
+                height: 10,
+              ),
+              ColorsConatiner(),
+              SizedBox(
+                height: 10,
+              ),
+              ImageColorConatiner(),
+              SizedBox(
+                height: 10,
+              ),
+              // Text(
+              //   style: Theme.of(context).textTheme.titleMedium,
+              //   "Recommend",
+              // ),
+              SizedBox(
+                height: 10,
+              ),
+              CategoryContainer(),
+            ],
           ),
         ),
       ),
     );
   }
 }
-
-// Create a provider for the WallpaperRepository concrete implementation
-final wallpaperRepositoryProvider = Provider<WallpaperRepository>((ref) {
-  // Replace WallpaperRepositoryImpl with the actual implementation of the repository
-  return WallpaperRepositoryImpl(WallpaperService());
-});

@@ -1,10 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:flutterwallpaper/core/resources/data_state.dart';
 import 'package:flutterwallpaper/domain/entities/category.dart';
-import 'package:flutterwallpaper/main.dart';
+import 'package:flutterwallpaper/presentation/home/wallpapers_page.dart';
+import 'package:flutterwallpaper/presentation/providers/wallpaper_repository_provider.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 class CategoryContainer extends HookConsumerWidget {
+  const CategoryContainer({super.key});
+
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final wallpaperRepository = ref.watch(wallpaperRepositoryProvider);
@@ -12,12 +16,13 @@ class CategoryContainer extends HookConsumerWidget {
     // Call the fetchWallpapers method to retrieve the data from the repository
     // For example, you can use FutureBuilder or StreamBuilder to handle the async operation
     return SizedBox(
-      height: 500,
+      height: (MediaQuery.of(context).size.height / 2) - 50,
       child: FutureBuilder<DataState<List<CategoryeEntity>>>(
         future: wallpaperRepository.fetchCategories(),
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
-            return const CircularProgressIndicator();
+            return SpinKitSpinningLines(
+                color: Theme.of(context).primaryColor, size: 50.0);
           } else if (snapshot.hasError) {
             return Text('Error: ${snapshot.error}');
           } else {
@@ -32,30 +37,44 @@ class CategoryContainer extends HookConsumerWidget {
                   String? nameCategory = wallpaperList?[index].name ?? "pexels";
                   return Padding(
                     padding: const EdgeInsets.all(0.0),
-                    child: Card(
-                      child: Row(
-                        children: [
-                          Image.network(
-                            wallpaperList?[index].url ?? "pexels",
-                            width: 60,
-                            height: 60,
-                            alignment: Alignment.center,
-                          ),
-                          SizedBox(
-                            width: 10,
-                          ),
-                          Expanded(
-                            child: Text(
-                              nameCategory,
-                              style: Theme.of(context).textTheme.titleMedium,
+                    child: GestureDetector(
+                      onTap: () => {
+                        // Navigate to the DetailScreen using MaterialPageRoute
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (_) => WallaperListPage(
+                                  page: 1,
+                                  category:
+                                      wallpaperList![index].name ?? "Biker"),
+                            )),
+                      },
+                      child: Card(
+                        child: Row(
+                          children: [
+                            FadeInImage(
+                              placeholder:
+                                  const AssetImage('images/placeholder.png'),
+                              image:
+                                  NetworkImage(wallpaperList![index].imageUrl),
+                              fit: BoxFit.cover,
                             ),
-                          )
-                        ],
+                            const SizedBox(
+                              width: 10,
+                            ),
+                            Expanded(
+                              child: Text(
+                                nameCategory,
+                                style: Theme.of(context).textTheme.titleMedium,
+                              ),
+                            )
+                          ],
+                        ),
                       ),
                     ),
                   );
                 },
-                gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                     mainAxisExtent: 70, crossAxisCount: 2),
               );
             } else {

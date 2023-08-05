@@ -37,8 +37,8 @@ class WallpaperDTO extends WallpaperEntity {
   Map<String, dynamic> toJson() => _$WallpaperDTOToJson(this);
 
   factory WallpaperDTO.fromDocument(DocumentSnapshot document) {
-    final _data = document.data() as Map<String, dynamic>;
-    return WallpaperDTO.fromJson(_data);
+    final data = document.data() as Map<String, dynamic>;
+    return WallpaperDTO.fromJson(data);
   }
 
   Map<String, dynamic> toDocument() {
