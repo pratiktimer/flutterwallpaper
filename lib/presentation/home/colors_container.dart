@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_device_type/flutter_device_type.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
+import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:flutterwallpaper/core/resources/data_state.dart';
 import 'package:flutterwallpaper/core/util/color_converter.dart';
 import 'package:flutterwallpaper/presentation/home/wallpapers_page.dart';
@@ -19,7 +21,7 @@ class ColorsConatiner extends HookConsumerWidget {
     // For example, you can use FutureBuilder or StreamBuilder to handle the async operation
     return SizedBox(
       width: MediaQuery.of(context).size.width,
-      height: 70,
+      height: Device.get().isTablet ? 140 : 70,
       child: FutureBuilder<DataState<List<ColorCategoryEntity>>>(
         future: wallpaperRepository.fetchColorCategories(),
         builder: (context, snapshot) {
@@ -35,7 +37,10 @@ class ColorsConatiner extends HookConsumerWidget {
             if (snapshot.data?.data != null) {
               final wallpaperList = snapshot.data!.data;
               // Use the wallpaperList to build your UI
-              return ListView.builder(
+              return MasonryGridView.count(
+                crossAxisCount: Device.get().isTablet ? 2 : 1,
+                mainAxisSpacing: Device.get().isTablet ? 2 : 1,
+                crossAxisSpacing: Device.get().isTablet ? 2 : 1,
                 shrinkWrap: true,
                 scrollDirection: Axis.horizontal,
                 itemCount: wallpaperList?.length ?? 0,

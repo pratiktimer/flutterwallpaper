@@ -53,6 +53,7 @@ class CategoryContainer extends HookConsumerWidget {
                         child: Row(
                           children: [
                             FadeInImage(
+                              width: 80,
                               placeholder:
                                   const AssetImage('images/placeholder.png'),
                               image:
