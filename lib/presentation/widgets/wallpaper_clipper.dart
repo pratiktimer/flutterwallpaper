@@ -11,9 +11,9 @@ class WallpaperTicketBothSidesClipper extends CustomClipper<Path> {
     //Altura inicial de las puntas
     double y = size.height;
     //Altura de control point. Por aca se va a hacer la curva
-    double yControlPoint = size.height * .90;
+    double yControlPoint = size.height * .95;
     //El width que se va a ir corriendo por cada linea
-    double increment = size.width / 40;
+    double increment = size.width / 30;
 
     while (x < size.width) {
       // La curva va a iniciar en x y terminar en x+increment.
@@ -29,7 +29,7 @@ class WallpaperTicketBothSidesClipper extends CustomClipper<Path> {
       // Vuelvo a iterar pero esta vez restando el incremento
       // Voy desde topRight a topLeft
       path.quadraticBezierTo(
-          x - increment / 2, size.height * .15, x - increment, 0);
+          x - increment / 2, size.height * .05, x - increment, 0);
       x -= increment;
     }
     // path.lineTo(x, 0.0);
