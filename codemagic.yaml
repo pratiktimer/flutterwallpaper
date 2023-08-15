@@ -9,7 +9,7 @@ workflows:
       cancel_previous_builds: true
     environment:
       groups:
-        - google_credential
+        - google_credentials
       flutter: stable
       xcode: latest
       cocoapods: default
