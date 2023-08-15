@@ -7,7 +7,7 @@ import 'package:flutterwallpaper/presentation/providers/wallpaper_repository_pro
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 class CategoryNamesContainer extends HookConsumerWidget {
-  const CategoryNamesContainer({super.key});
+  const CategoryNamesContainer({key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {

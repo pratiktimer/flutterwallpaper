@@ -23,7 +23,7 @@ _launchGit() async {
 }
 
 class OfflineDev extends StatelessWidget {
-  const OfflineDev({super.key});
+  const OfflineDev({key});
 
   @override
   Widget build(BuildContext context) {

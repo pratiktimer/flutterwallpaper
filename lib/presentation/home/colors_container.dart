@@ -11,7 +11,7 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import '../../domain/entities/color_category.dart';
 
 class ColorsConatiner extends HookConsumerWidget {
-  const ColorsConatiner({super.key});
+  const ColorsConatiner({key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {

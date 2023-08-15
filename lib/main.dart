@@ -24,7 +24,7 @@ Future<void> main() async {
 }
 
 class HomeApp extends HookConsumerWidget {
-  const HomeApp({super.key});
+  const HomeApp({key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -39,7 +39,7 @@ class HomeApp extends HookConsumerWidget {
 }
 
 class MyApp extends HookConsumerWidget {
-  const MyApp({super.key});
+  const MyApp({key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {

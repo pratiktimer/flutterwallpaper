@@ -7,7 +7,7 @@ part 'category_name_dto.g.dart';
 @JsonSerializable()
 @Entity(tableName: 'categoryname', primaryKeys: ['name'])
 class CategoryNameDTO extends CategoryNameEntity {
-  const CategoryNameDTO({required super.name});
+  const CategoryNameDTO({required name}) : super(name: name);
 
   factory CategoryNameDTO.fromDocument(DocumentSnapshot document) {
     final data = document.data() as Map<String, dynamic>;

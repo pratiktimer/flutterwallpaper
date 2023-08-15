@@ -9,11 +9,17 @@ part 'developer_dto.g.dart';
 @Entity(tableName: 'developer', primaryKeys: ['name'])
 class DeveloperDTO extends DeveloperEntity {
   const DeveloperDTO(
-      {required super.name,
-      required super.quote,
-      required super.myquote,
-      required super.backgroundImage,
-      required super.profileImage});
+      {required name,
+      required quote,
+      required myquote,
+      required backgroundImage,
+      required profileImage})
+      : super(
+            name: name,
+            quote: quote,
+            myquote: myquote,
+            backgroundImage: backgroundImage,
+            profileImage: profileImage);
 
   factory DeveloperDTO.fromDocument(DocumentSnapshot document) {
     final data = document.data() as Map<String, dynamic>;

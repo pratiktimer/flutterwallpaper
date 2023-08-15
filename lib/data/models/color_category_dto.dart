@@ -7,7 +7,8 @@ part 'color_category_dto.g.dart';
 @JsonSerializable()
 @Entity(tableName: 'colorcategory', primaryKeys: ['name'])
 class ColorCategoryDTO extends ColorCategoryEntity {
-  const ColorCategoryDTO({required super.name, required super.hexValue});
+  const ColorCategoryDTO({required name, required hexValue})
+      : super(name: name, hexValue: hexValue);
   factory ColorCategoryDTO.fromDocument(DocumentSnapshot document) {
     final data = document.data() as Map<String, dynamic>;
     return ColorCategoryDTO.fromJson(data);

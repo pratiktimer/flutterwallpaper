@@ -11,7 +11,7 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import '../../core/resources/data_state.dart';
 
 class ImageColorConatiner extends HookConsumerWidget {
-  const ImageColorConatiner({super.key});
+  const ImageColorConatiner({key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -83,7 +83,7 @@ class ColorCardWithImage extends StatelessWidget {
   final String cardName;
 
   const ColorCardWithImage({
-    super.key,
+    key,
     required this.imageUrl,
     required this.cardColor,
     required this.cardName,
@@ -120,8 +120,8 @@ class ColorCardWithImage extends StatelessWidget {
                 borderRadius: BorderRadius.circular(4),
               ),
               child: Text(
-                style: Theme.of(context).textTheme.bodyMedium,
                 cardName,
+                style: Theme.of(context).textTheme.bodyMedium,
               ),
             ),
           ),

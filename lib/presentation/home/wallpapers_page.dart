@@ -12,7 +12,7 @@ class WallaperListPage extends HookConsumerWidget {
   final String category;
   final ScrollController _scrollController = ScrollController();
 
-  WallaperListPage({super.key, required this.page, required this.category});
+  WallaperListPage({key, required this.page, required this.category});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {

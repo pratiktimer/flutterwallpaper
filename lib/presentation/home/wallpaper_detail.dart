@@ -15,10 +15,7 @@ class WallaperDetailPage extends StatefulHookConsumerWidget {
   late PageController _scrollController;
 
   WallaperDetailPage(
-      {super.key,
-      required this.page,
-      required this.category,
-      required this.index});
+      {key, required this.page, required this.category, required this.index});
 
   @override
   ConsumerState<ConsumerStatefulWidget> createState() => WallaperDetailState();

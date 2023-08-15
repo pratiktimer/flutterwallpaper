@@ -24,7 +24,7 @@ _launchGit() async {
 
 class OnlineDev extends StatelessWidget {
   final DeveloperEntity developer;
-  const OnlineDev(this.developer, {super.key});
+  const OnlineDev(this.developer, {key});
 
   @override
   Widget build(BuildContext context) {
