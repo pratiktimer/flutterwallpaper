@@ -1,0 +1,82 @@
+workflows:
+  android-deploy-workflow:
+    name: Android Deployment Workflow
+    instance_type: mac_mini_m1
+    max_build_duration: 30
+    triggering:
+      events:
+        - tag
+      cancel_previous_builds: true
+    environment:
+      groups:
+        - google_credential
+      flutter: stable
+      xcode: latest
+      cocoapods: default
+    scripts:
+      - name: Setup the keystore
+        script: |
+          echo $KEYSTORE_FILE | base64 --decode > /tmp/keystore.jks
+          cat >> "$CM_BUILD_DIR/android/key.properties" << EOF
+          storePassword=$storePassword
+          keyPassword=$keyPassword
+          keyAlias=key
+          storeFile=/tmp/keystore.jks
+          EOF
+      - name: Build AAB
+        script: |
+          cd $CM_BUILD_DIR
+          flutter packages pub get
+          flutter build appbundle --build-number=$PROJECT_BUILD_NUMBER
+    artifacts:
+      - build/**/outputs/**/*.aab
+    publishing:
+      google_play:
+        credentials: $GOOGLE_PLAY_SERVICE_ACCOUNT
+        track: beta
+        submit_as_draft: true
+  android-workflow:
+    name: Android Workflow
+    instance_type: mac_mini_m1
+    max_build_duration: 30
+    environment:
+      groups:
+        - google_credentials # <-- (Includes GCLOUD_KEY_FILE, GOOGLE_CREDENTIALS)
+      vars:
+        FIREBASE_PROJECT: "fe-community-dev"
+      flutter: stable
+      xcode: latest
+      cocoapods: default
+    scripts:
+      - name: Get Flutter packages
+        script: |
+          flutter packages pub get
+      - name: Build APK with Flutter
+        script: |
+          flutter build apk --debug
+      - name: Create debug and test APK
+        script: |
+          set -ex
+          cd android
+          ./gradlew app:assembleAndroidTest
+          ./gradlew app:assembleDebug -Ptarget="$CM_BUILD_DIR/integration_test/app_test.dart"
+      - name: Run Firebase Test Lab tests
+        script: |
+          set -ex
+
+          echo $GCLOUD_KEY_FILE | base64 --decode > ./gcloud_key_file.json
+
+          gcloud auth activate-service-account --key-file=gcloud_key_file.json
+
+          gcloud --quiet config set project $FIREBASE_PROJECT
+
+          gcloud firebase test android run \
+            --type instrumentation \
+            --app build/app/outputs/apk/debug/app-debug.apk \
+            --test build/app/outputs/apk/androidTest/debug/app-debug-androidTest.apk \
+            --timeout 3m
+    artifacts:
+      - build/**/outputs/**/*.apk
+      - build/**/outputs/**/*.aab
+      - build/**/outputs/**/mapping.txt
+      - flutter_drive.log
