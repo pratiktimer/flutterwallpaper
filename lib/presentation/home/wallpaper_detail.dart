@@ -6,6 +6,8 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:wallpaper/wallpaper.dart';
 
+enum WallpaperType { Home, Lock, Both }
+
 class WallaperDetailPage extends StatefulHookConsumerWidget {
   final int index;
   final int page;
@@ -89,18 +91,61 @@ class WallaperDetailState extends ConsumerState<WallaperDetailPage> {
                               : const Text("")),
                     ),
                     Align(
-                      alignment: const Alignment(1.0, 0.7),
+                      alignment: const Alignment(1.0, 0.2),
                       child: FloatingActionButton(
-                        heroTag: "two1",
+                        heroTag: "one1",
                         backgroundColor:
                             const Color(0xFF010101).withOpacity(0.5),
                         onPressed: () async {
                           return await dowloadImage(
+                              WallpaperType.Home,
                               context,
                               wallpaperList[index].potrait ??
                                   wallpaperList[index].large!);
                         },
-                        tooltip: 'Set Wallpaper',
+                        tooltip: 'Set Home Screen',
+                        child: const Icon(
+                          // Add the lines from here...
+                          Icons.home_filled,
+                          color: Colors.white,
+                        ),
+                      ),
+                    ),
+                    Align(
+                      alignment: const Alignment(1.0, 0.4),
+                      child: FloatingActionButton(
+                        heroTag: "two2",
+                        backgroundColor:
+                            const Color(0xFF010101).withOpacity(0.5),
+                        onPressed: () async {
+                          return await dowloadImage(
+                              WallpaperType.Lock,
+                              context,
+                              wallpaperList[index].potrait ??
+                                  wallpaperList[index].large!);
+                        },
+                        tooltip: 'Set Lock Screen',
+                        child: const Icon(
+                          // Add the lines from here...
+                          Icons.lock,
+                          color: Colors.white,
+                        ),
+                      ),
+                    ),
+                    Align(
+                      alignment: const Alignment(1.0, 0.6),
+                      child: FloatingActionButton(
+                        heroTag: "three3",
+                        backgroundColor:
+                            const Color(0xFF010101).withOpacity(0.5),
+                        onPressed: () async {
+                          return await dowloadImage(
+                              WallpaperType.Both,
+                              context,
+                              wallpaperList[index].potrait ??
+                                  wallpaperList[index].large!);
+                        },
+                        tooltip: 'Set Lock Screen',
                         child: const Icon(
                           // Add the lines from here...
                           Icons.wallpaper,
@@ -109,7 +154,7 @@ class WallaperDetailState extends ConsumerState<WallaperDetailPage> {
                       ),
                     ),
                     Align(
-                      alignment: const Alignment(1.0, 0.4),
+                      alignment: const Alignment(1.0, 0.8),
                       child: FloatingActionButton(
                         backgroundColor:
                             const Color(0xFF010101).withOpacity(0.5),
@@ -146,7 +191,8 @@ class WallaperDetailState extends ConsumerState<WallaperDetailPage> {
     );
   }
 
-  Future<void> dowloadImage(BuildContext context, String url) async {
+  Future<void> dowloadImage(
+      WallpaperType type, BuildContext context, String url) async {
     progressString = Wallpaper.imageDownloadProgress(url,
         location: DownloadLocation.APPLICATION_DIRECTORY);
     progressString.listen((data) {
@@ -159,7 +205,20 @@ class WallaperDetailState extends ConsumerState<WallaperDetailPage> {
         downloading = false;
       });
 
-      Wallpaper.bothScreen(location: DownloadLocation.APPLICATION_DIRECTORY);
+      switch (type) {
+        case WallpaperType.Home:
+          Wallpaper.homeScreen(
+              location: DownloadLocation.APPLICATION_DIRECTORY);
+          break;
+        case WallpaperType.Lock:
+          Wallpaper.lockScreen(
+              location: DownloadLocation.APPLICATION_DIRECTORY);
+          break;
+        case WallpaperType.Both:
+          Wallpaper.bothScreen(
+              location: DownloadLocation.APPLICATION_DIRECTORY);
+          break;
+      }
     }, onError: (error) {
       setState(() {
         downloading = false;
@@ -184,45 +243,6 @@ class WallaperDetailState extends ConsumerState<WallaperDetailPage> {
             )
           ],
         ),
-      ),
-    );
-  }
-}
-
-class DialogDemoItem extends StatelessWidget {
-  const DialogDemoItem(
-      {super.key,
-      required this.icon,
-      required this.color,
-      required this.text,
-      required this.onPressed});
-
-  final IconData icon;
-  final Color color;
-  final String text;
-  final VoidCallback onPressed;
-
-  @override
-  Widget build(BuildContext context) {
-    return SimpleDialogOption(
-      onPressed: onPressed,
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.start,
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: <Widget>[
-          Icon(icon, size: 0.0, color: color),
-          Padding(
-            padding: const EdgeInsets.only(
-                left: 0.0, right: 6.0, bottom: 6.0, top: 6.0),
-            child: Text(
-              text,
-              style: const TextStyle(
-                  fontWeight: FontWeight.bold,
-                  fontSize: 16.0,
-                  color: Colors.black),
-            ),
-          ),
-        ],
       ),
     );
   }
