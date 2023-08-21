@@ -6,6 +6,7 @@ import 'package:flutterwallpaper/presentation/providers/wallpaper_list_notifier.
 import 'package:flutterwallpaper/presentation/widgets/wallpaper_clipper.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
+import 'package:transparent_image/transparent_image.dart';
 
 class WallaperListPage extends HookConsumerWidget {
   final int page;
@@ -42,9 +43,9 @@ class WallaperListPage extends HookConsumerWidget {
                     },
                 child: ClipPath(
                     clipper: WallpaperTicketBothSidesClipper(),
-                    child: FadeInImage(
-                      placeholder: const AssetImage('images/placeholder.png'),
-                      image: NetworkImage(wallpaperList[index].listimageUrl),
+                    child: FadeInImage.memoryNetwork(
+                      placeholder: kTransparentImage,
+                      image: (wallpaperList[index].listimageUrl),
                       fit: BoxFit.cover,
                     )));
           },

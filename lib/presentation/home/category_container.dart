@@ -5,6 +5,7 @@ import 'package:flutterwallpaper/domain/entities/category.dart';
 import 'package:flutterwallpaper/presentation/home/wallpapers_page.dart';
 import 'package:flutterwallpaper/presentation/providers/wallpaper_repository_provider.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:transparent_image/transparent_image.dart';
 
 class CategoryContainer extends HookConsumerWidget {
   const CategoryContainer({key});
@@ -52,13 +53,14 @@ class CategoryContainer extends HookConsumerWidget {
                       child: Card(
                         child: Row(
                           children: [
-                            FadeInImage(
-                              width: 80,
-                              placeholder:
-                                  const AssetImage('images/placeholder.png'),
-                              image:
-                                  NetworkImage(wallpaperList![index].imageUrl),
-                              fit: BoxFit.cover,
+                            ClipRRect(
+                              borderRadius: BorderRadius.circular(6),
+                              child: FadeInImage.memoryNetwork(
+                                width: 80,
+                                placeholder: kTransparentImage,
+                                image: wallpaperList![index].imageUrl,
+                                fit: BoxFit.cover,
+                              ),
                             ),
                             const SizedBox(
                               width: 10,

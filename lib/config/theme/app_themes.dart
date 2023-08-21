@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 ThemeData buildLightTheme() {
-  final ThemeData base = ThemeData.light();
+  final ThemeData base = ThemeData.light(useMaterial3: true);
   return base.copyWith(
       iconTheme: base.iconTheme.copyWith(
         color: Colors.white,
@@ -32,7 +32,7 @@ ThemeData buildLightTheme() {
 }
 
 ThemeData buildDarkTheme() {
-  final ThemeData base = ThemeData.dark();
+  final ThemeData base = ThemeData.dark(useMaterial3: true);
   return base.copyWith(
       scaffoldBackgroundColor: Colors.black,
       iconTheme: base.iconTheme.copyWith(),
@@ -57,5 +57,5 @@ ThemeData buildDarkTheme() {
         // Add more text styles if needed
       ),
       cardTheme: const CardTheme(
-          color: Colors.black, shadowColor: Colors.white54, elevation: 10));
+          color: Colors.black, shadowColor: Colors.white70, elevation: 10));
 }

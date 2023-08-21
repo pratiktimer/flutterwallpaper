@@ -7,6 +7,7 @@ import 'package:flutterwallpaper/domain/entities/image_color_category.dart';
 import 'package:flutterwallpaper/presentation/home/wallpapers_page.dart';
 import 'package:flutterwallpaper/presentation/providers/wallpaper_repository_provider.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:transparent_image/transparent_image.dart';
 
 import '../../core/resources/data_state.dart';
 
@@ -104,10 +105,13 @@ class ColorCardWithImage extends StatelessWidget {
               left: 0,
               right: 0,
               height: 150,
-              child: FadeInImage(
-                placeholder: const AssetImage('images/placeholder.png'),
-                image: NetworkImage(imageUrl),
-                fit: BoxFit.cover,
+              child: ClipRRect(
+                borderRadius: BorderRadius.circular(6),
+                child: FadeInImage.memoryNetwork(
+                  placeholder: kTransparentImage,
+                  image: (imageUrl),
+                  fit: BoxFit.cover,
+                ),
               )),
           // Colored card name at the left bottom
           Positioned(
