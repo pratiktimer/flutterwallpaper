@@ -25,10 +25,9 @@ ThemeData buildLightTheme() {
         // Add more text styles if needed
       ),
       cardTheme: const CardTheme(
-          surfaceTintColor: Colors.white,
-          color: Colors.white,
-          shadowColor: Colors.black,
-          elevation: 10));
+          //surfaceTintColor: Colors.white,
+          //shadowColor: Colors.black,
+          elevation: 4));
 }
 
 ThemeData buildDarkTheme() {
@@ -57,5 +56,8 @@ ThemeData buildDarkTheme() {
         // Add more text styles if needed
       ),
       cardTheme: const CardTheme(
-          color: Colors.black, shadowColor: Colors.white70, elevation: 10));
+          shape: BeveledRectangleBorder(),
+          color: Colors.black,
+          //shadowColor: Colors.white,
+          elevation: 4));
 }

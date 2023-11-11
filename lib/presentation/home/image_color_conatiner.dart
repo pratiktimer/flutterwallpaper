@@ -42,7 +42,6 @@ class ImageColorConatiner extends HookConsumerWidget {
                 scrollDirection: Axis.horizontal,
                 itemCount: wallpaperList?.length ?? 0,
                 itemBuilder: (context, index) {
-                  String? nameCategory = wallpaperList?[index].name ?? "pexels";
                   return GestureDetector(
                     onTap: () => {
                       // Navigate to the DetailScreen using MaterialPageRoute
@@ -62,7 +61,7 @@ class ImageColorConatiner extends HookConsumerWidget {
                         imageUrl: wallpaperList![index].defaultUrl,
                         cardColor: wallpaperList[index].hexValue.toColor() ??
                             Colors.white,
-                        cardName: nameCategory,
+                        cardName: wallpaperList![index].categoryName,
                       ),
                     ),
                   );
@@ -93,26 +92,35 @@ class ColorCardWithImage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Card(
-      color: cardColor.withOpacity(0.5),
+      color: cardColor.withOpacity(0.1),
       elevation: 4,
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
       child: Stack(
         children: [
-          // Positioned image beyond the top of the card
-          Positioned(
-              top:
-                  -30, // Adjust the value to move the image beyond the top of the card
-              left: 0,
-              right: 0,
-              height: 150,
-              child: ClipRRect(
-                borderRadius: BorderRadius.circular(6),
-                child: FadeInImage.memoryNetwork(
-                  placeholder: kTransparentImage,
-                  image: (imageUrl),
-                  fit: BoxFit.cover,
-                ),
-              )),
+          ClipRRect(
+            borderRadius: BorderRadius.circular(6),
+            child: FadeInImage.memoryNetwork(
+              width: MediaQuery.of(context).size.width,
+              height: MediaQuery.of(context).size.height,
+              placeholder: kTransparentImage,
+              image: (imageUrl),
+              fit: BoxFit.cover,
+            ),
+          ),
+          ClipRRect(
+            borderRadius: BorderRadius.circular(6),
+            child: Container(
+              decoration: BoxDecoration(
+                gradient: LinearGradient(
+                    begin: Alignment.bottomCenter,
+                    end: Alignment.topCenter,
+                    colors: [
+                      Colors.black54,
+                      Colors.transparent.withOpacity(0.1)
+                    ]),
+              ),
+            ),
+          ),
           // Colored card name at the left bottom
           Positioned(
             bottom: 8,
@@ -120,7 +128,6 @@ class ColorCardWithImage extends StatelessWidget {
             child: Container(
               padding: const EdgeInsets.all(8),
               decoration: BoxDecoration(
-                color: Colors.black.withOpacity(0.5),
                 borderRadius: BorderRadius.circular(4),
               ),
               child: Text(

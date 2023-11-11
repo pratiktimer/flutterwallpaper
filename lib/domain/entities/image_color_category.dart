@@ -16,4 +16,6 @@ class ImageColorCategoryEntity extends Equatable {
   List<Object?> get props {
     return [name, hexValue, imageUrl];
   }
+
+  String get categoryName => name ?? "Biker";
 }

@@ -6,7 +6,7 @@ import '../../domain/entities/wallpaper.dart';
 part 'wallpaper_dto.g.dart';
 
 @JsonSerializable()
-@Entity(tableName: 'wallpaer', primaryKeys: ['potrait'])
+@Entity(tableName: 'wallpaper', primaryKeys: ['id'])
 class WallpaperDTO extends WallpaperEntity {
   const WallpaperDTO(
       {double? id,

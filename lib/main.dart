@@ -1,6 +1,8 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:flutterwallpaper/config/theme/routes/routes.dart';
 import 'package:flutterwallpaper/firebase_options.dart';
 import 'package:flutterwallpaper/injection_container.dart';
 import 'package:flutterwallpaper/presentation/developer/developer_page.dart';
@@ -8,7 +10,6 @@ import 'package:flutterwallpaper/presentation/home/category_name_container.dart'
 import 'package:flutterwallpaper/presentation/home/colors_container.dart';
 import 'package:flutterwallpaper/presentation/home/image_color_conatiner.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:launch_review/launch_review.dart';
 import 'package:share_plus/share_plus.dart';
 import 'config/theme/app_themes.dart';
 import 'presentation/home/category_container.dart';
@@ -33,13 +34,14 @@ class HomeApp extends HookConsumerWidget {
       debugShowCheckedModeBanner: false,
       theme: buildLightTheme(),
       darkTheme: buildDarkTheme(),
-      home: const MyApp(),
+      onGenerateRoute: AppRoutes.onGenerateRoutes,
+      home: const WallpaerHomePage(),
     );
   }
 }
 
-class MyApp extends HookConsumerWidget {
-  const MyApp({key});
+class WallpaerHomePage extends HookConsumerWidget {
+  const WallpaerHomePage({key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -90,7 +92,7 @@ class MyApp extends HookConsumerWidget {
               title: const Text("Do you wish to close the app ?"),
               cancelButton: CupertinoActionSheetAction(
                 isDefaultAction: true,
-                onPressed: () => Navigator.of(context).pop(true),
+                onPressed: () => SystemNavigator.pop(),
                 child: const Text("Close"),
               ),
               message:
@@ -100,7 +102,7 @@ class MyApp extends HookConsumerWidget {
                     child: const Text("Review now on Playstore"),
                     onPressed: () {
                       Navigator.pop(context);
-                      LaunchReview.launch();
+                      //LaunchReview.launch();
                     }),
                 CupertinoActionSheetAction(
                   child: const Text("Connect with the Developer"),

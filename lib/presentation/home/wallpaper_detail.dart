@@ -1,7 +1,11 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:flutterwallpaper/domain/entities/wallpaper.dart';
+import 'package:flutterwallpaper/domain/repository/wallpaper_repository.dart';
+import 'package:flutterwallpaper/presentation/providers/favourite_controller.dart';
 import 'package:flutterwallpaper/presentation/providers/wallpaper_list_notifier.dart';
+import 'package:flutterwallpaper/presentation/providers/wallpaper_repository_provider.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:wallpaper/wallpaper.dart';
@@ -31,6 +35,7 @@ class WallaperDetailState extends ConsumerState<WallaperDetailPage> {
     widget._scrollController = PageController(initialPage: widget.index);
     final asyncValue =
         ref.watch(wallpaperListNotifierProvider(widget.category));
+
     MediaQueryData query;
     query = MediaQuery.of(context);
     return Scaffold(
@@ -39,6 +44,7 @@ class WallaperDetailState extends ConsumerState<WallaperDetailPage> {
           controller: widget._scrollController,
           itemCount: wallpaperList.length,
           itemBuilder: (context, index) {
+            //bool isFav = _favController.isFavorite(wallpaperList[index]);
             return GestureDetector(
                 onTap: () {
                   setState(() {
@@ -47,20 +53,21 @@ class WallaperDetailState extends ConsumerState<WallaperDetailPage> {
                 },
                 child: Scaffold(
                   body: Stack(children: <Widget>[
-                    Hero(
-                      tag: wallpaperList[index].medium ?? "",
-                      child: SizedBox(
-                          width: query.size.width,
-                          height: query.size.height,
-                          child: downloading
-                              ? imageDownloadDialog()
-                              : FadeInImage(
-                                  placeholder: const AssetImage(
-                                      'images/placeholder.png'),
-                                  image: NetworkImage(
-                                      wallpaperList[index].imageUrl),
-                                  fit: BoxFit.cover,
-                                )),
+                    SizedBox(
+                      width: query.size.width,
+                      height: query.size.height,
+                      child: downloading
+                          ? imageDownloadDialog()
+                          : Hero(
+                              tag: index.toString(),
+                              child: FadeInImage(
+                                placeholder:
+                                    const AssetImage('images/placeholder.png'),
+                                image:
+                                    NetworkImage(wallpaperList[index].imageUrl),
+                                fit: BoxFit.cover,
+                              ),
+                            ),
                     ),
                     Align(
                       alignment: const Alignment(0.0, 0.0),
@@ -87,8 +94,26 @@ class WallaperDetailState extends ConsumerState<WallaperDetailPage> {
                                 )
                               : const Text("")),
                     ),
+                    // Align(
+                    //   alignment: const Alignment(1.0, 0.2),
+                    //   child: FloatingActionButton(
+                    //     heroTag: "fav",
+                    //     backgroundColor:
+                    //         const Color(0xFF010101).withOpacity(0.5),
+                    //     onPressed: () async {
+                    //       _favController
+                    //           .addRemoveFavourites(wallpaperList[index]);
+                    //     },
+                    //     tooltip: 'Set Favourite Wallpaper',
+                    //     child: Icon(
+                    //       // Add the lines from here...
+                    //       Icons.favorite,
+                    //       color: isFav ? Colors.red : Colors.white,
+                    //     ),
+                    //   ),
+                    // ),
                     Align(
-                      alignment: const Alignment(1.0, 0.2),
+                      alignment: const Alignment(1.0, 0.4),
                       child: FloatingActionButton(
                         heroTag: "one1",
                         backgroundColor:
@@ -109,7 +134,7 @@ class WallaperDetailState extends ConsumerState<WallaperDetailPage> {
                       ),
                     ),
                     Align(
-                      alignment: const Alignment(1.0, 0.4),
+                      alignment: const Alignment(1.0, 0.6),
                       child: FloatingActionButton(
                         heroTag: "two2",
                         backgroundColor:
@@ -130,7 +155,7 @@ class WallaperDetailState extends ConsumerState<WallaperDetailPage> {
                       ),
                     ),
                     Align(
-                      alignment: const Alignment(1.0, 0.6),
+                      alignment: const Alignment(1.0, 0.8),
                       child: FloatingActionButton(
                         heroTag: "three3",
                         backgroundColor:
@@ -151,7 +176,7 @@ class WallaperDetailState extends ConsumerState<WallaperDetailPage> {
                       ),
                     ),
                     Align(
-                      alignment: const Alignment(1.0, 0.8),
+                      alignment: const Alignment(1.0, 1),
                       child: FloatingActionButton(
                         backgroundColor:
                             const Color(0xFF010101).withOpacity(0.5),

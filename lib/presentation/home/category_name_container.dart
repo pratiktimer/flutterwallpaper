@@ -6,6 +6,8 @@ import 'package:flutterwallpaper/presentation/home/wallpapers_page.dart';
 import 'package:flutterwallpaper/presentation/providers/wallpaper_repository_provider.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
+import '../../config/theme/routes/routes.dart';
+
 class CategoryNamesContainer extends HookConsumerWidget {
   const CategoryNamesContainer({key});
 
@@ -35,28 +37,19 @@ class CategoryNamesContainer extends HookConsumerWidget {
                 scrollDirection: Axis.horizontal,
                 itemCount: wallpaperList?.length ?? 0,
                 itemBuilder: (context, index) {
-                  String? nameCategory = wallpaperList?[index].name ?? "pexels";
                   return GestureDetector(
                     onTap: () => {
                       // Navigate to the DetailScreen using MaterialPageRoute
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (_) => WallaperListPage(
-                                page: 1,
-                                category:
-                                    wallpaperList![index].name ?? "Biker"),
-                          )),
+                      AppRoutes.onWallpaerCategoryPressed(
+                          context, 1, wallpaperList![index].categoryName)
                     },
                     child: Card(
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(5.0),
-                      ),
+                      shape: RoundedRectangleBorder(),
                       child: Padding(
                         padding: const EdgeInsets.all(8.0),
                         child: Center(
                           child: Text(
-                            nameCategory,
+                            wallpaperList![index].categoryName,
                             style: Theme.of(context).textTheme.titleMedium,
                           ),
                         ),

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_device_type/flutter_device_type.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
+import 'package:flutterwallpaper/config/theme/routes/routes.dart';
 import 'package:flutterwallpaper/core/resources/data_state.dart';
 import 'package:flutterwallpaper/core/util/color_converter.dart';
 import 'package:flutterwallpaper/presentation/home/wallpapers_page.dart';
@@ -50,20 +51,14 @@ class ColorsConatiner extends HookConsumerWidget {
                     child: GestureDetector(
                       onTap: () => {
                         // Navigate to the DetailScreen using MaterialPageRoute
-                        Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (_) => WallaperListPage(
-                                  page: 1,
-                                  category:
-                                      wallpaperList![index].name ?? "Biker"),
-                            )),
+                        AppRoutes.onWallpaerCategoryPressed(
+                            context, 1, wallpaperList![index].categoryName)
                       },
                       child: Container(
                         decoration: BoxDecoration(
                           color: wallpaperList?[index].hexValue.toColor(),
                           borderRadius:
-                              BorderRadius.circular(8), // Rounded corners
+                              BorderRadius.circular(15), // Rounded corners
                         ),
                         width: 60,
                         height: 60,

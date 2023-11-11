@@ -19,3 +19,12 @@ abstract class WallpaperRepository {
 
   Future<DataState<List<ImageColorCategoryDTO>>> fetchImageColorCategories();
 }
+
+abstract class LocalWallpaperRepository {
+  // Database methods
+  Future<List<WallpaperEntity>> getFavourites();
+
+  Future<void> addToFavourite(WallpaperEntity article);
+
+  Future<void> removeFromfavourite(WallpaperEntity article);
+}

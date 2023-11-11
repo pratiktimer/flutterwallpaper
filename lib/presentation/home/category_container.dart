@@ -2,10 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:flutterwallpaper/core/resources/data_state.dart';
 import 'package:flutterwallpaper/domain/entities/category.dart';
-import 'package:flutterwallpaper/presentation/home/wallpapers_page.dart';
 import 'package:flutterwallpaper/presentation/providers/wallpaper_repository_provider.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:transparent_image/transparent_image.dart';
+
+import '../../config/theme/routes/routes.dart';
 
 class CategoryContainer extends HookConsumerWidget {
   const CategoryContainer({key});
@@ -35,20 +36,13 @@ class CategoryContainer extends HookConsumerWidget {
                 scrollDirection: Axis.vertical,
                 itemCount: wallpaperList?.length ?? 0,
                 itemBuilder: (context, index) {
-                  String? nameCategory = wallpaperList?[index].name ?? "pexels";
                   return Padding(
                     padding: const EdgeInsets.all(0.0),
                     child: GestureDetector(
                       onTap: () => {
                         // Navigate to the DetailScreen using MaterialPageRoute
-                        Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (_) => WallaperListPage(
-                                  page: 1,
-                                  category:
-                                      wallpaperList![index].name ?? "Biker"),
-                            )),
+                        AppRoutes.onWallpaerCategoryPressed(
+                            context, 1, wallpaperList![index].categoryName)
                       },
                       child: Card(
                         child: Row(
@@ -67,7 +61,7 @@ class CategoryContainer extends HookConsumerWidget {
                             ),
                             Expanded(
                               child: Text(
-                                nameCategory,
+                                wallpaperList![index].categoryName,
                                 style: Theme.of(context).textTheme.titleMedium,
                               ),
                             )
