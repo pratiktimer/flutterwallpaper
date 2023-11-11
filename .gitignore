@@ -10,7 +10,7 @@
 .svn/
 migrate_working_dir/
 google-services.json
-*.g.dart
+# *.g.dart
 # Ignore Firebase configuration file inside the lib folder
 /lib/firebase_options.dart
 firebase_options.dart
