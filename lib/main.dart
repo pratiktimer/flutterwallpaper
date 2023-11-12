@@ -10,6 +10,7 @@ import 'package:flutterwallpaper/presentation/home/category_name_container.dart'
 import 'package:flutterwallpaper/presentation/home/colors_container.dart';
 import 'package:flutterwallpaper/presentation/home/image_color_conatiner.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:launch_review/launch_review.dart';
 import 'package:share_plus/share_plus.dart';
 import 'config/theme/app_themes.dart';
 import 'presentation/home/category_container.dart';
@@ -29,6 +30,7 @@ class HomeApp extends HookConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    ref.watch(themeProvider).getSelectedThemeMode();
     return MaterialApp(
       themeMode: ref.watch(themeProvider).selectedThemeMode,
       debugShowCheckedModeBanner: false,
@@ -47,15 +49,32 @@ class WallpaerHomePage extends HookConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     return WillPopScope(
       onWillPop: () => _onBackPress(context),
-      child: const Scaffold(
-        body: SingleChildScrollView(
+      child: Scaffold(
+        appBar: AppBar(
+          actions: [
+            IconButton(
+              icon: const Icon(
+                Icons.favorite,
+                color: Colors.red,
+              ),
+              onPressed: () {
+                // Handle onPressed for the info icon
+                AppRoutes.onFavPressed(context, 1, "");
+              },
+            ),
+            IconButton(
+              icon: const Icon(Icons.track_changes_rounded),
+              onPressed: () {
+                ref.watch(themeProvider).setSelectedThemeMode();
+              },
+            ),
+          ],
+        ),
+        body: const SingleChildScrollView(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             mainAxisAlignment: MainAxisAlignment.start,
             children: <Widget>[
-              SizedBox(
-                height: 40,
-              ),
               CategoryNamesContainer(),
               SizedBox(
                 height: 10,
@@ -102,7 +121,7 @@ class WallpaerHomePage extends HookConsumerWidget {
                     child: const Text("Review now on Playstore"),
                     onPressed: () {
                       Navigator.pop(context);
-                      //LaunchReview.launch();
+                      LaunchReview.launch();
                     }),
                 CupertinoActionSheetAction(
                   child: const Text("Connect with the Developer"),

@@ -5,7 +5,6 @@ import 'package:flutterwallpaper/data/models/category_dto.dart';
 import 'package:flutterwallpaper/data/models/category_name_dto.dart';
 import 'package:flutterwallpaper/data/models/color_category_dto.dart';
 import 'package:flutterwallpaper/data/models/image_color_category_dto.dart';
-import 'package:flutterwallpaper/domain/entities/wallpaper.dart';
 import 'package:flutterwallpaper/domain/repository/wallpaper_repository.dart';
 import '../models/wallpaper_dto.dart';
 

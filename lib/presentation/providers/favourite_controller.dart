@@ -6,7 +6,7 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 final favRepositoryProvider =
     FutureProvider<FavoritesStateNotifier>((ref) async {
   // Replace WallpaperRepositoryImpl with the actual implementation of the repository
-  final localRepo = await ref.watch(localWallpaperRepositoryProvider.future);
+  final localRepo = ref.watch(localWallpaperRepositoryProvider);
   return FavoritesStateNotifier(localRepo);
 });
 
@@ -15,13 +15,16 @@ class FavoritesStateNotifier
   final LocalWallpaperRepository _localWallpaperRepository;
 
   FavoritesStateNotifier(this._localWallpaperRepository)
-      : super(const AsyncLoading());
+      : super(const AsyncLoading()) {
+    _fetchFavorites();
+  }
 
-  Future<void> fetchFavorites() async {
+  Future<void> _fetchFavorites() async {
     state = const AsyncLoading();
     try {
       final favorites = await _localWallpaperRepository
           .getFavourites(); // Adjust this based on your implementation
+
       state = AsyncData(favorites);
     } catch (error, stackTrace) {
       state = AsyncError(error, stackTrace);

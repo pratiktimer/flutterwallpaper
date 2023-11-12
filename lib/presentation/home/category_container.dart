@@ -3,6 +3,7 @@ import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:flutterwallpaper/core/resources/data_state.dart';
 import 'package:flutterwallpaper/domain/entities/category.dart';
 import 'package:flutterwallpaper/presentation/providers/wallpaper_repository_provider.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:transparent_image/transparent_image.dart';
 
@@ -62,7 +63,9 @@ class CategoryContainer extends HookConsumerWidget {
                             Expanded(
                               child: Text(
                                 wallpaperList![index].categoryName,
-                                style: Theme.of(context).textTheme.titleMedium,
+                                style: GoogleFonts.aDLaMDisplay(
+                                    textStyle:
+                                        Theme.of(context).textTheme.bodyMedium),
                               ),
                             )
                           ],

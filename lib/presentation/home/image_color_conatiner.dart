@@ -6,6 +6,7 @@ import 'package:flutterwallpaper/core/util/color_converter.dart';
 import 'package:flutterwallpaper/domain/entities/image_color_category.dart';
 import 'package:flutterwallpaper/presentation/home/wallpapers_page.dart';
 import 'package:flutterwallpaper/presentation/providers/wallpaper_repository_provider.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:transparent_image/transparent_image.dart';
 
@@ -91,6 +92,11 @@ class ColorCardWithImage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final brightness = Theme.of(context).brightness;
+    final gradientColors = brightness == Brightness.dark
+        ? [Colors.black54, Colors.transparent.withOpacity(0.1)]
+        : [Colors.white, Colors.transparent.withOpacity(0.1)];
+
     return Card(
       color: cardColor.withOpacity(0.1),
       elevation: 4,
@@ -113,11 +119,9 @@ class ColorCardWithImage extends StatelessWidget {
               decoration: BoxDecoration(
                 gradient: LinearGradient(
                     begin: Alignment.bottomCenter,
+                    stops: const [0.2, 0.35],
                     end: Alignment.topCenter,
-                    colors: [
-                      Colors.black54,
-                      Colors.transparent.withOpacity(0.1)
-                    ]),
+                    colors: gradientColors),
               ),
             ),
           ),
@@ -132,7 +136,10 @@ class ColorCardWithImage extends StatelessWidget {
               ),
               child: Text(
                 cardName,
-                style: Theme.of(context).textTheme.bodyMedium,
+                style: GoogleFonts.aboreto(
+                    fontWeight: FontWeight.w700,
+                    fontStyle: FontStyle.italic,
+                    textStyle: Theme.of(context).textTheme.bodyLarge),
               ),
             ),
           ),

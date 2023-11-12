@@ -1,11 +1,8 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
-import 'package:flutterwallpaper/domain/entities/wallpaper.dart';
-import 'package:flutterwallpaper/domain/repository/wallpaper_repository.dart';
 import 'package:flutterwallpaper/presentation/providers/favourite_controller.dart';
 import 'package:flutterwallpaper/presentation/providers/wallpaper_list_notifier.dart';
-import 'package:flutterwallpaper/presentation/providers/wallpaper_repository_provider.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:wallpaper/wallpaper.dart';
@@ -16,10 +13,15 @@ class WallaperDetailPage extends StatefulHookConsumerWidget {
   final int index;
   final int page;
   final String category;
+  final FavoritesStateNotifier favController;
   late PageController _scrollController;
 
   WallaperDetailPage(
-      {key, required this.page, required this.category, required this.index});
+      {key,
+      required this.page,
+      required this.category,
+      required this.index,
+      required this.favController});
 
   @override
   ConsumerState<ConsumerStatefulWidget> createState() => WallaperDetailState();
@@ -44,7 +46,6 @@ class WallaperDetailState extends ConsumerState<WallaperDetailPage> {
           controller: widget._scrollController,
           itemCount: wallpaperList.length,
           itemBuilder: (context, index) {
-            //bool isFav = _favController.isFavorite(wallpaperList[index]);
             return GestureDetector(
                 onTap: () {
                   setState(() {
@@ -94,24 +95,28 @@ class WallaperDetailState extends ConsumerState<WallaperDetailPage> {
                                 )
                               : const Text("")),
                     ),
-                    // Align(
-                    //   alignment: const Alignment(1.0, 0.2),
-                    //   child: FloatingActionButton(
-                    //     heroTag: "fav",
-                    //     backgroundColor:
-                    //         const Color(0xFF010101).withOpacity(0.5),
-                    //     onPressed: () async {
-                    //       _favController
-                    //           .addRemoveFavourites(wallpaperList[index]);
-                    //     },
-                    //     tooltip: 'Set Favourite Wallpaper',
-                    //     child: Icon(
-                    //       // Add the lines from here...
-                    //       Icons.favorite,
-                    //       color: isFav ? Colors.red : Colors.white,
-                    //     ),
-                    //   ),
-                    // ),
+                    Align(
+                      alignment: const Alignment(1.0, 0.2),
+                      child: FloatingActionButton(
+                        heroTag: "fav",
+                        backgroundColor:
+                            const Color(0xFF010101).withOpacity(0.5),
+                        onPressed: () async {
+                          widget.favController
+                              .addRemoveFavourites(wallpaperList[index]);
+                          setState(() {});
+                        },
+                        tooltip: 'Set Favourite Wallpaper',
+                        child: Icon(
+                          // Add the lines from here...
+                          Icons.favorite,
+                          color: widget.favController
+                                  .isFavorite(wallpaperList[index])
+                              ? Colors.red
+                              : Colors.white,
+                        ),
+                      ),
+                    ),
                     Align(
                       alignment: const Alignment(1.0, 0.4),
                       child: FloatingActionButton(

@@ -1,4 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/src/consumer.dart';
+import 'package:flutterwallpaper/presentation/home/favourite_page.dart';
+import 'package:flutterwallpaper/presentation/home/favourite_wallpaper_detail.dart';
+import 'package:flutterwallpaper/presentation/providers/favourite_controller.dart';
 
 import '../../../main.dart';
 import '../../../presentation/home/wallpaper_detail.dart';
@@ -15,6 +19,8 @@ class AppRoutes {
         return _materialRoute(WallaperListPage(
             page: wallpaperListPageArgs.page,
             category: wallpaperListPageArgs.category));
+      case '/FavListPage':
+        return _materialRoute(FavListPage());
 
       case '/WallpaerDetailPage':
         var wallpaperListPageArgs =
@@ -23,6 +29,15 @@ class AppRoutes {
           page: wallpaperListPageArgs.page,
           category: wallpaperListPageArgs.category,
           index: wallpaperListPageArgs.index,
+          favController: wallpaperListPageArgs.favController,
+        ));
+
+      case '/FavDetailPage':
+        var wallpaperListPageArgs =
+            settings.arguments as WallaperDetailPageArguments;
+        return _materialRoute(FavWallaperDetailPage(
+          index: wallpaperListPageArgs.index,
+          favController: wallpaperListPageArgs.favController,
         ));
       default:
         return _materialRoute(const HomeApp());
@@ -39,10 +54,26 @@ class AppRoutes {
         arguments: WallaperListPageArguments(page, category));
   }
 
-  static void onWallpaperItemPressed(
-      BuildContext context, int page, String category, int index) {
+  static void onFavPressed(BuildContext context, int page, String category) {
+    Navigator.pushNamed(context, '/FavListPage',
+        arguments: WallaperListPageArguments(page, category));
+  }
+
+  static void onWallpaperItemPressed(BuildContext context, int page,
+      String category, int index, FavoritesStateNotifier favController) {
     Navigator.pushNamed(context, '/WallpaerDetailPage',
-        arguments: WallaperDetailPageArguments(page, category, index));
+        arguments:
+            WallaperDetailPageArguments(page, category, index, favController));
+  }
+
+  static Future<void> onFavItemPressed(BuildContext context, int index,
+      FavoritesStateNotifier favController, WidgetRef ref) async {
+    var result = await Navigator.pushNamed(context, '/FavDetailPage',
+        arguments: WallaperDetailPageArguments(0, "", index, favController));
+
+    if (result == "reload") {
+      ref.refresh(favRepositoryProvider); // Refresh the provider
+    }
   }
 }
 
@@ -63,6 +94,8 @@ class WallaperDetailPageArguments {
   final int page;
   final String category;
   final int index;
+  final FavoritesStateNotifier favController;
 
-  WallaperDetailPageArguments(this.page, this.category, this.index);
+  WallaperDetailPageArguments(
+      this.page, this.category, this.index, this.favController);
 }

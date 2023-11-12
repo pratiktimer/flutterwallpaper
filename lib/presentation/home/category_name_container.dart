@@ -4,6 +4,7 @@ import 'package:flutterwallpaper/core/resources/data_state.dart';
 import 'package:flutterwallpaper/domain/entities/category_name.dart';
 import 'package:flutterwallpaper/presentation/home/wallpapers_page.dart';
 import 'package:flutterwallpaper/presentation/providers/wallpaper_repository_provider.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 import '../../config/theme/routes/routes.dart';
@@ -44,13 +45,21 @@ class CategoryNamesContainer extends HookConsumerWidget {
                           context, 1, wallpaperList![index].categoryName)
                     },
                     child: Card(
-                      shape: RoundedRectangleBorder(),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(
+                            4.0), // Adjust the radius as needed
+                        side: const BorderSide(
+                          width: 0.5, // Specify the border width
+                        ),
+                      ),
                       child: Padding(
                         padding: const EdgeInsets.all(8.0),
                         child: Center(
                           child: Text(
                             wallpaperList![index].categoryName,
-                            style: Theme.of(context).textTheme.titleMedium,
+                            style: GoogleFonts.lato(
+                                textStyle:
+                                    Theme.of(context).textTheme.bodyLarge),
                           ),
                         ),
                       ),

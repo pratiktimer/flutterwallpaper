@@ -17,15 +17,36 @@ final wallpaperServiceProvider = Provider<WallpaperService>((ref) {
   return WallpaperService();
 });
 
+final localWallpaperRepositoryProvider =
+    Provider<LocalWallpaperRepository>((ref) {
+  // Replace WallpaperRepositoryImpl with the actual implementation of the repository
+  final appDatabase = ref.watch(appDatabaseInstanceProvider);
+  return LocalWallpaperRepositoryImpl(appDatabase!);
+});
+
+// Initial provider to obtain AppDatabase asynchronously
 final appDatabaseProvider = FutureProvider<AppDatabase>((ref) async {
   final database =
       await $FloorAppDatabase.databaseBuilder('app_database.db').build();
   return database;
 });
 
-final localWallpaperRepositoryProvider =
-    FutureProvider<LocalWallpaperRepository>((ref) async {
-  // Replace WallpaperRepositoryImpl with the actual implementation of the repository
-  final wallpaperService = await ref.watch(appDatabaseProvider.future);
-  return LocalWallpaperRepositoryImpl(wallpaperService);
+// Separate provider to provide the already obtained AppDatabase instance
+final appDatabaseInstanceProvider = Provider<AppDatabase?>((ref) {
+  // Use ref.watch to listen to changes in the appDatabaseProvider
+  final appDatabaseFuture = ref.watch(appDatabaseProvider);
+  // Use maybeWhen to check if the future has completed and provide the instance
+  return appDatabaseFuture.maybeWhen(
+    data: (appDatabase) => appDatabase,
+    orElse: () => null,
+  );
 });
+
+// final favRepositoryProvider =
+//     FutureProvider<FavoritesStateNotifier>((ref) async {
+//   final localRepo = ref.watch(localWallpaperRepositoryProvider);
+//   final favoritesNotifier = FavoritesStateNotifier(localRepo);
+//   await favoritesNotifier
+//       .fetchFavorites(); // Fetch favorites when creating the provider
+//   return favoritesNotifier;
+// });
