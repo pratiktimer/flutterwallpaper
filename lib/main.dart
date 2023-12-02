@@ -3,6 +3,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutterwallpaper/config/theme/routes/routes.dart';
+import 'package:flutterwallpaper/core/util/db_utils.dart';
 import 'package:flutterwallpaper/firebase_options.dart';
 import 'package:flutterwallpaper/injection_container.dart';
 import 'package:flutterwallpaper/presentation/developer/developer_page.dart';
@@ -22,6 +23,7 @@ Future<void> main() async {
     options: DefaultFirebaseOptions.currentPlatform,
   );
   await initializeDependencies();
+
   runApp(const ProviderScope(child: HomeApp()));
 }
 
@@ -31,6 +33,7 @@ class HomeApp extends HookConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     ref.watch(themeProvider).getSelectedThemeMode();
+    DatabaseUtils.getAppDatabase(ref);
     return MaterialApp(
       themeMode: ref.watch(themeProvider).selectedThemeMode,
       debugShowCheckedModeBanner: false,

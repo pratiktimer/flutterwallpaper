@@ -128,7 +128,7 @@ class ColorCardWithImage extends StatelessWidget {
           // Colored card name at the left bottom
           Positioned(
             bottom: 8,
-            left: 8,
+            left: 0,
             child: Container(
               padding: const EdgeInsets.all(8),
               decoration: BoxDecoration(
@@ -139,7 +139,7 @@ class ColorCardWithImage extends StatelessWidget {
                 style: GoogleFonts.aboreto(
                     fontWeight: FontWeight.w700,
                     fontStyle: FontStyle.italic,
-                    textStyle: Theme.of(context).textTheme.bodyLarge),
+                    textStyle: Theme.of(context).textTheme.bodyMedium),
               ),
             ),
           ),
