@@ -53,31 +53,33 @@ class WallpaerHomePage extends HookConsumerWidget {
     return WillPopScope(
       onWillPop: () => _onBackPress(context),
       child: Scaffold(
-        appBar: AppBar(
-          actions: [
-            IconButton(
-              icon: const Icon(
-                Icons.favorite,
-                color: Colors.red,
+          body: CustomScrollView(
+        slivers: [
+          SliverAppBar(
+            floating: true,
+            snap: true,
+            //expandedHeight: 200,
+            actions: [
+              IconButton(
+                icon: const Icon(
+                  Icons.favorite,
+                  color: Colors.red,
+                ),
+                onPressed: () {
+                  // Handle onPressed for the info icon
+                  AppRoutes.onFavPressed(context, 1, "");
+                },
               ),
-              onPressed: () {
-                // Handle onPressed for the info icon
-                AppRoutes.onFavPressed(context, 1, "");
-              },
-            ),
-            IconButton(
-              icon: const Icon(Icons.track_changes_rounded),
-              onPressed: () {
-                ref.watch(themeProvider).setSelectedThemeMode();
-              },
-            ),
-          ],
-        ),
-        body: const SingleChildScrollView(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            mainAxisAlignment: MainAxisAlignment.start,
-            children: <Widget>[
+              IconButton(
+                icon: const Icon(Icons.track_changes_rounded),
+                onPressed: () {
+                  ref.watch(themeProvider).setSelectedThemeMode();
+                },
+              ),
+            ],
+          ),
+          SliverList.list(
+            children: const [
               CategoryNamesContainer(),
               SizedBox(
                 height: 10,
@@ -90,18 +92,11 @@ class WallpaerHomePage extends HookConsumerWidget {
               SizedBox(
                 height: 10,
               ),
-              // Text(
-              //   style: Theme.of(context).textTheme.titleMedium,
-              //   "Recommend",
-              // ),
-              SizedBox(
-                height: 10,
-              ),
-              CategoryContainer(),
+              CategoryContainer()
             ],
-          ),
-        ),
-      ),
+          )
+        ],
+      )),
     );
   }
 

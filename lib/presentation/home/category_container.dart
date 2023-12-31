@@ -19,7 +19,7 @@ class CategoryContainer extends HookConsumerWidget {
     // Call the fetchWallpapers method to retrieve the data from the repository
     // For example, you can use FutureBuilder or StreamBuilder to handle the async operation
     return SizedBox(
-      height: (MediaQuery.of(context).size.height / 2) - 50,
+      height: 0.8 * MediaQuery.of(context).size.height,
       child: FutureBuilder<DataState<List<CategoryeEntity>>>(
         future: wallpaperRepository.fetchCategories(),
         builder: (context, snapshot) {
