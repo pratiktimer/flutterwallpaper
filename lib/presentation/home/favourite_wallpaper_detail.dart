@@ -224,8 +224,9 @@ class WallaperDetailState extends ConsumerState<FavWallaperDetailPage> {
 
   Future<void> dowloadImage(
       WallpaperType type, BuildContext context, String url) async {
+    print(url);
     progressString = Wallpaper.imageDownloadProgress(url,
-        location: DownloadLocation.APPLICATION_DIRECTORY);
+        location: DownloadLocation.applicationDirectory);
     progressString.listen((data) {
       setState(() {
         res = data;
@@ -238,16 +239,13 @@ class WallaperDetailState extends ConsumerState<FavWallaperDetailPage> {
 
       switch (type) {
         case WallpaperType.Home:
-          Wallpaper.homeScreen(
-              location: DownloadLocation.APPLICATION_DIRECTORY);
+          Wallpaper.homeScreen(location: DownloadLocation.applicationDirectory);
           break;
         case WallpaperType.Lock:
-          Wallpaper.lockScreen(
-              location: DownloadLocation.APPLICATION_DIRECTORY);
+          Wallpaper.lockScreen(location: DownloadLocation.applicationDirectory);
           break;
         case WallpaperType.Both:
-          Wallpaper.bothScreen(
-              location: DownloadLocation.APPLICATION_DIRECTORY);
+          Wallpaper.bothScreen(location: DownloadLocation.applicationDirectory);
           break;
       }
     }, onError: (error) {

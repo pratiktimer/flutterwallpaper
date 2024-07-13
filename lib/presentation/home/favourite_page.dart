@@ -55,7 +55,7 @@ class FavListPage extends HookConsumerWidget {
           mainAxisSize: MainAxisSize.max,
           children: [
             Container(
-                width: 400.0,
+                width: 380.0,
                 height: 114.0,
                 margin: const EdgeInsets.only(bottom: 30),
                 child: const Hero(
