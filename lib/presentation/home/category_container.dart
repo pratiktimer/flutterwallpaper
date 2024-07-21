@@ -2,12 +2,15 @@ import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:flutterwallpaper/core/resources/data_state.dart';
 import 'package:flutterwallpaper/domain/entities/category.dart';
-import 'package:flutterwallpaper/presentation/home/wallpapers_page.dart';
 import 'package:flutterwallpaper/presentation/providers/wallpaper_repository_provider.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:transparent_image/transparent_image.dart';
+
+import '../../config/theme/routes/routes.dart';
 
 class CategoryContainer extends HookConsumerWidget {
-  const CategoryContainer({super.key});
+  const CategoryContainer({key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -16,7 +19,7 @@ class CategoryContainer extends HookConsumerWidget {
     // Call the fetchWallpapers method to retrieve the data from the repository
     // For example, you can use FutureBuilder or StreamBuilder to handle the async operation
     return SizedBox(
-      height: (MediaQuery.of(context).size.height / 2) - 50,
+      height: 0.8 * MediaQuery.of(context).size.height,
       child: FutureBuilder<DataState<List<CategoryeEntity>>>(
         future: wallpaperRepository.fetchCategories(),
         builder: (context, snapshot) {
@@ -34,39 +37,35 @@ class CategoryContainer extends HookConsumerWidget {
                 scrollDirection: Axis.vertical,
                 itemCount: wallpaperList?.length ?? 0,
                 itemBuilder: (context, index) {
-                  String? nameCategory = wallpaperList?[index].name ?? "pexels";
                   return Padding(
                     padding: const EdgeInsets.all(0.0),
                     child: GestureDetector(
                       onTap: () => {
                         // Navigate to the DetailScreen using MaterialPageRoute
-                        Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (_) => WallaperListPage(
-                                  page: 1,
-                                  category:
-                                      wallpaperList![index].name ?? "Biker"),
-                            )),
+                        AppRoutes.onWallpaerCategoryPressed(
+                            context, 1, wallpaperList![index].categoryName)
                       },
                       child: Card(
                         child: Row(
                           children: [
-                            FadeInImage(
-                              width: 80,
-                              placeholder:
-                                  const AssetImage('images/placeholder.png'),
-                              image:
-                                  NetworkImage(wallpaperList![index].imageUrl),
-                              fit: BoxFit.cover,
+                            ClipRRect(
+                              borderRadius: BorderRadius.circular(6),
+                              child: FadeInImage.memoryNetwork(
+                                width: 80,
+                                placeholder: kTransparentImage,
+                                image: wallpaperList![index].imageUrl,
+                                fit: BoxFit.cover,
+                              ),
                             ),
                             const SizedBox(
                               width: 10,
                             ),
                             Expanded(
                               child: Text(
-                                nameCategory,
-                                style: Theme.of(context).textTheme.titleMedium,
+                                wallpaperList![index].categoryName,
+                                style: GoogleFonts.aDLaMDisplay(
+                                    textStyle:
+                                        Theme.of(context).textTheme.bodyMedium),
                               ),
                             )
                           ],

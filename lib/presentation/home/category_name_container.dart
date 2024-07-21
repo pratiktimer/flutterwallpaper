@@ -4,10 +4,13 @@ import 'package:flutterwallpaper/core/resources/data_state.dart';
 import 'package:flutterwallpaper/domain/entities/category_name.dart';
 import 'package:flutterwallpaper/presentation/home/wallpapers_page.dart';
 import 'package:flutterwallpaper/presentation/providers/wallpaper_repository_provider.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
+import '../../config/theme/routes/routes.dart';
+
 class CategoryNamesContainer extends HookConsumerWidget {
-  const CategoryNamesContainer({super.key});
+  const CategoryNamesContainer({key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -35,29 +38,28 @@ class CategoryNamesContainer extends HookConsumerWidget {
                 scrollDirection: Axis.horizontal,
                 itemCount: wallpaperList?.length ?? 0,
                 itemBuilder: (context, index) {
-                  String? nameCategory = wallpaperList?[index].name ?? "pexels";
                   return GestureDetector(
                     onTap: () => {
                       // Navigate to the DetailScreen using MaterialPageRoute
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (_) => WallaperListPage(
-                                page: 1,
-                                category:
-                                    wallpaperList![index].name ?? "Biker"),
-                          )),
+                      AppRoutes.onWallpaerCategoryPressed(
+                          context, 1, wallpaperList![index].categoryName)
                     },
                     child: Card(
                       shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(5.0),
+                        borderRadius: BorderRadius.circular(
+                            4.0), // Adjust the radius as needed
+                        side: const BorderSide(
+                          width: 0.5, // Specify the border width
+                        ),
                       ),
                       child: Padding(
                         padding: const EdgeInsets.all(8.0),
                         child: Center(
                           child: Text(
-                            nameCategory,
-                            style: Theme.of(context).textTheme.titleMedium,
+                            wallpaperList![index].categoryName,
+                            style: GoogleFonts.lato(
+                                textStyle:
+                                    Theme.of(context).textTheme.bodyLarge),
                           ),
                         ),
                       ),

@@ -1,5 +1,6 @@
 import 'package:flutterwallpaper/core/resources/data_state.dart';
 import 'package:flutterwallpaper/core/util/custom_exception.dart';
+import 'package:flutterwallpaper/data/data_sources/local/app_database.dart';
 import 'package:flutterwallpaper/domain/entities/wallpaper.dart';
 import 'package:flutterwallpaper/domain/repository/wallpaper_repository.dart';
 import 'package:flutterwallpaper/presentation/providers/wallpaper_repository_provider.dart';
@@ -9,7 +10,8 @@ final wallpaperListNotifierProvider = StateNotifierProvider.family<
     WallpaperListNotifier, AsyncValue<List<WallpaperEntity>>, String>(
   (ref, category) {
     final wallpaperRepository = ref.watch(wallpaperRepositoryProvider);
-    return WallpaperListNotifier(wallpaperRepository, category);
+    final appDatabase = ref.watch(appDatabaseInstanceProvider);
+    return WallpaperListNotifier(wallpaperRepository, category, appDatabase!);
   },
 );
 
@@ -19,7 +21,10 @@ class WallpaperListNotifier
   String _currentCategory = '';
   int currentPage = 1;
 
-  WallpaperListNotifier(this._wallpaperRepository, this._currentCategory)
+  final appDatabase;
+
+  WallpaperListNotifier(
+      this._wallpaperRepository, this._currentCategory, this.appDatabase)
       : super(const AsyncLoading()) {
     currentPage = 1;
     loadMoreItems(_currentCategory);

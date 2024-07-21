@@ -9,7 +9,8 @@ part 'image_color_category_dto.g.dart';
 @Entity(tableName: 'imagecolorcategory', primaryKeys: ['name'])
 class ImageColorCategoryDTO extends ImageColorCategoryEntity {
   const ImageColorCategoryDTO(
-      {required super.name, required super.hexValue, required super.imageUrl});
+      {required name, required hexValue, required imageUrl})
+      : super(name: name, hexValue: hexValue, imageUrl: imageUrl);
 
   factory ImageColorCategoryDTO.fromDocument(DocumentSnapshot document) {
     final data = document.data() as Map<String, dynamic>;

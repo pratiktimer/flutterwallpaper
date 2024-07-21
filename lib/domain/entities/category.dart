@@ -16,4 +16,6 @@ class CategoryeEntity extends Equatable {
   List<Object?> get props {
     return [name];
   }
+
+  String get categoryName => name ?? "Biker";
 }

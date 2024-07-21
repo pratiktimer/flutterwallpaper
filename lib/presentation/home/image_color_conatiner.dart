@@ -6,12 +6,14 @@ import 'package:flutterwallpaper/core/util/color_converter.dart';
 import 'package:flutterwallpaper/domain/entities/image_color_category.dart';
 import 'package:flutterwallpaper/presentation/home/wallpapers_page.dart';
 import 'package:flutterwallpaper/presentation/providers/wallpaper_repository_provider.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:transparent_image/transparent_image.dart';
 
 import '../../core/resources/data_state.dart';
 
 class ImageColorConatiner extends HookConsumerWidget {
-  const ImageColorConatiner({super.key});
+  const ImageColorConatiner({key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -41,7 +43,6 @@ class ImageColorConatiner extends HookConsumerWidget {
                 scrollDirection: Axis.horizontal,
                 itemCount: wallpaperList?.length ?? 0,
                 itemBuilder: (context, index) {
-                  String? nameCategory = wallpaperList?[index].name ?? "pexels";
                   return GestureDetector(
                     onTap: () => {
                       // Navigate to the DetailScreen using MaterialPageRoute
@@ -61,7 +62,7 @@ class ImageColorConatiner extends HookConsumerWidget {
                         imageUrl: wallpaperList![index].defaultUrl,
                         cardColor: wallpaperList[index].hexValue.toColor() ??
                             Colors.white,
-                        cardName: nameCategory,
+                        cardName: wallpaperList![index].categoryName,
                       ),
                     ),
                   );
@@ -83,7 +84,7 @@ class ColorCardWithImage extends StatelessWidget {
   final String cardName;
 
   const ColorCardWithImage({
-    super.key,
+    key,
     required this.imageUrl,
     required this.cardColor,
     required this.cardName,
@@ -91,37 +92,54 @@ class ColorCardWithImage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final brightness = Theme.of(context).brightness;
+    final gradientColors = brightness == Brightness.dark
+        ? [Colors.black54, Colors.transparent.withOpacity(0.1)]
+        : [Colors.white, Colors.transparent.withOpacity(0.1)];
+
     return Card(
-      color: cardColor.withOpacity(0.5),
+      color: cardColor.withOpacity(0.1),
       elevation: 4,
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
       child: Stack(
         children: [
-          // Positioned image beyond the top of the card
-          Positioned(
-              top:
-                  -30, // Adjust the value to move the image beyond the top of the card
-              left: 0,
-              right: 0,
-              height: 150,
-              child: FadeInImage(
-                placeholder: const AssetImage('images/placeholder.png'),
-                image: NetworkImage(imageUrl),
-                fit: BoxFit.cover,
-              )),
+          ClipRRect(
+            borderRadius: BorderRadius.circular(6),
+            child: FadeInImage.memoryNetwork(
+              width: MediaQuery.of(context).size.width,
+              height: MediaQuery.of(context).size.height,
+              placeholder: kTransparentImage,
+              image: (imageUrl),
+              fit: BoxFit.cover,
+            ),
+          ),
+          ClipRRect(
+            borderRadius: BorderRadius.circular(6),
+            child: Container(
+              decoration: BoxDecoration(
+                gradient: LinearGradient(
+                    begin: Alignment.bottomCenter,
+                    stops: const [0.2, 0.35],
+                    end: Alignment.topCenter,
+                    colors: gradientColors),
+              ),
+            ),
+          ),
           // Colored card name at the left bottom
           Positioned(
             bottom: 8,
-            left: 8,
+            left: 0,
             child: Container(
               padding: const EdgeInsets.all(8),
               decoration: BoxDecoration(
-                color: Colors.black.withOpacity(0.5),
                 borderRadius: BorderRadius.circular(4),
               ),
               child: Text(
-                style: Theme.of(context).textTheme.bodyMedium,
                 cardName,
+                style: GoogleFonts.aboreto(
+                    fontWeight: FontWeight.w700,
+                    fontStyle: FontStyle.italic,
+                    textStyle: Theme.of(context).textTheme.bodyMedium),
               ),
             ),
           ),

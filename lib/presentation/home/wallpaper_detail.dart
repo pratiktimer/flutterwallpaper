@@ -1,22 +1,27 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:flutterwallpaper/presentation/providers/favourite_controller.dart';
 import 'package:flutterwallpaper/presentation/providers/wallpaper_list_notifier.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:wallpaper/wallpaper.dart';
 
+enum WallpaperType { Home, Lock, Both }
+
 class WallaperDetailPage extends StatefulHookConsumerWidget {
   final int index;
   final int page;
   final String category;
+  final FavoritesStateNotifier favController;
   late PageController _scrollController;
 
   WallaperDetailPage(
-      {super.key,
+      {key,
       required this.page,
       required this.category,
-      required this.index});
+      required this.index,
+      required this.favController});
 
   @override
   ConsumerState<ConsumerStatefulWidget> createState() => WallaperDetailState();
@@ -32,6 +37,7 @@ class WallaperDetailState extends ConsumerState<WallaperDetailPage> {
     widget._scrollController = PageController(initialPage: widget.index);
     final asyncValue =
         ref.watch(wallpaperListNotifierProvider(widget.category));
+
     MediaQueryData query;
     query = MediaQuery.of(context);
     return Scaffold(
@@ -48,20 +54,21 @@ class WallaperDetailState extends ConsumerState<WallaperDetailPage> {
                 },
                 child: Scaffold(
                   body: Stack(children: <Widget>[
-                    Hero(
-                      tag: wallpaperList[index].medium ?? "",
-                      child: SizedBox(
-                          width: query.size.width,
-                          height: query.size.height,
-                          child: downloading
-                              ? imageDownloadDialog()
-                              : FadeInImage(
-                                  placeholder: const AssetImage(
-                                      'images/placeholder.png'),
-                                  image: NetworkImage(
-                                      wallpaperList[index].imageUrl),
-                                  fit: BoxFit.cover,
-                                )),
+                    SizedBox(
+                      width: query.size.width,
+                      height: query.size.height,
+                      child: downloading
+                          ? imageDownloadDialog()
+                          : Hero(
+                              tag: index.toString(),
+                              child: FadeInImage(
+                                placeholder:
+                                    const AssetImage('images/placeholder.png'),
+                                image:
+                                    NetworkImage(wallpaperList[index].imageUrl),
+                                fit: BoxFit.cover,
+                              ),
+                            ),
                     ),
                     Align(
                       alignment: const Alignment(0.0, 0.0),
@@ -89,18 +96,83 @@ class WallaperDetailState extends ConsumerState<WallaperDetailPage> {
                               : const Text("")),
                     ),
                     Align(
-                      alignment: const Alignment(1.0, 0.7),
+                      alignment: const Alignment(1.0, 0.2),
                       child: FloatingActionButton(
-                        heroTag: "two1",
+                        heroTag: "fav",
+                        backgroundColor:
+                            const Color(0xFF010101).withOpacity(0.5),
+                        onPressed: () async {
+                          widget.favController
+                              .addRemoveFavourites(wallpaperList[index]);
+                          setState(() {});
+                        },
+                        tooltip: 'Set Favourite Wallpaper',
+                        child: Icon(
+                          // Add the lines from here...
+                          Icons.favorite,
+                          color: widget.favController
+                                  .isFavorite(wallpaperList[index])
+                              ? Colors.red
+                              : Colors.white,
+                        ),
+                      ),
+                    ),
+                    Align(
+                      alignment: const Alignment(1.0, 0.4),
+                      child: FloatingActionButton(
+                        heroTag: "one1",
                         backgroundColor:
                             const Color(0xFF010101).withOpacity(0.5),
                         onPressed: () async {
                           return await dowloadImage(
+                              WallpaperType.Home,
                               context,
                               wallpaperList[index].potrait ??
                                   wallpaperList[index].large!);
                         },
-                        tooltip: 'Set Wallpaper',
+                        tooltip: 'Set Home Screen',
+                        child: const Icon(
+                          // Add the lines from here...
+                          Icons.home_filled,
+                          color: Colors.white,
+                        ),
+                      ),
+                    ),
+                    Align(
+                      alignment: const Alignment(1.0, 0.6),
+                      child: FloatingActionButton(
+                        heroTag: "two2",
+                        backgroundColor:
+                            const Color(0xFF010101).withOpacity(0.5),
+                        onPressed: () async {
+                          return await dowloadImage(
+                              WallpaperType.Lock,
+                              context,
+                              wallpaperList[index].potrait ??
+                                  wallpaperList[index].large!);
+                        },
+                        tooltip: 'Set Lock Screen',
+                        child: const Icon(
+                          // Add the lines from here...
+                          Icons.lock,
+                          color: Colors.white,
+                        ),
+                      ),
+                    ),
+                    Align(
+                      alignment: const Alignment(1.0, 0.8),
+                      child: FloatingActionButton(
+                        heroTag: "three3",
+                        backgroundColor:
+                            const Color(0xFF010101).withOpacity(0.5),
+                        onPressed: () async {
+                          return await dowloadImage(
+                              WallpaperType.Both,
+                              context,
+                              wallpaperList[index].potrait ??
+                                  wallpaperList[index].large!);
+                        },
+                        tooltip: 'Set Lock Screen',
                         child: const Icon(
                           // Add the lines from here...
                           Icons.wallpaper,
@@ -109,7 +181,7 @@ class WallaperDetailState extends ConsumerState<WallaperDetailPage> {
                       ),
                     ),
                     Align(
-                      alignment: const Alignment(1.0, 0.4),
+                      alignment: const Alignment(1.0, 1),
                       child: FloatingActionButton(
                         backgroundColor:
                             const Color(0xFF010101).withOpacity(0.5),
@@ -146,9 +218,11 @@ class WallaperDetailState extends ConsumerState<WallaperDetailPage> {
     );
   }
 
-  Future<void> dowloadImage(BuildContext context, String url) async {
-    progressString = Wallpaper.imageDownloadProgress(url,
-        location: DownloadLocation.APPLICATION_DIRECTORY);
+  Future<void> dowloadImage(
+      WallpaperType type, BuildContext context, String url) async {
+    progressString = Wallpaper.imageDownloadProgress(
+        url.contains('?') ? url.split('?').first : url,
+        location: DownloadLocation.applicationDirectory);
     progressString.listen((data) {
       setState(() {
         res = data;
@@ -159,7 +233,17 @@ class WallaperDetailState extends ConsumerState<WallaperDetailPage> {
         downloading = false;
       });
 
-      Wallpaper.bothScreen(location: DownloadLocation.APPLICATION_DIRECTORY);
+      switch (type) {
+        case WallpaperType.Home:
+          Wallpaper.homeScreen(location: DownloadLocation.applicationDirectory);
+          break;
+        case WallpaperType.Lock:
+          Wallpaper.lockScreen(location: DownloadLocation.applicationDirectory);
+          break;
+        case WallpaperType.Both:
+          Wallpaper.bothScreen(location: DownloadLocation.applicationDirectory);
+          break;
+      }
     }, onError: (error) {
       setState(() {
         downloading = false;
@@ -184,45 +268,6 @@ class WallaperDetailState extends ConsumerState<WallaperDetailPage> {
             )
           ],
         ),
-      ),
-    );
-  }
-}
-
-class DialogDemoItem extends StatelessWidget {
-  const DialogDemoItem(
-      {super.key,
-      required this.icon,
-      required this.color,
-      required this.text,
-      required this.onPressed});
-
-  final IconData icon;
-  final Color color;
-  final String text;
-  final VoidCallback onPressed;
-
-  @override
-  Widget build(BuildContext context) {
-    return SimpleDialogOption(
-      onPressed: onPressed,
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.start,
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: <Widget>[
-          Icon(icon, size: 0.0, color: color),
-          Padding(
-            padding: const EdgeInsets.only(
-                left: 0.0, right: 6.0, bottom: 6.0, top: 6.0),
-            child: Text(
-              text,
-              style: const TextStyle(
-                  fontWeight: FontWeight.bold,
-                  fontSize: 16.0,
-                  color: Colors.black),
-            ),
-          ),
-        ],
       ),
     );
   }
