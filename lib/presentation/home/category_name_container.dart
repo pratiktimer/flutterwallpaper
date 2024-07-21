@@ -1,9 +1,11 @@
+import 'dart:ui';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:flutterwallpaper/core/resources/data_state.dart';
 import 'package:flutterwallpaper/domain/entities/category_name.dart';
-import 'package:flutterwallpaper/presentation/home/wallpapers_page.dart';
 import 'package:flutterwallpaper/presentation/providers/wallpaper_repository_provider.dart';
+import 'package:flutterwallpaper/presentation/windows_scroll_behaviour.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
@@ -33,40 +35,42 @@ class CategoryNamesContainer extends HookConsumerWidget {
             if (snapshot.data?.data != null) {
               final wallpaperList = snapshot.data!.data;
               // Use the wallpaperList to build your UI
-              return ListView.builder(
-                shrinkWrap: true,
-                scrollDirection: Axis.horizontal,
-                itemCount: wallpaperList?.length ?? 0,
-                itemBuilder: (context, index) {
-                  return GestureDetector(
-                    onTap: () => {
-                      // Navigate to the DetailScreen using MaterialPageRoute
-                      AppRoutes.onWallpaerCategoryPressed(
-                          context, 1, wallpaperList![index].categoryName)
-                    },
-                    child: Card(
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(
-                            4.0), // Adjust the radius as needed
-                        side: const BorderSide(
-                          width: 0.5, // Specify the border width
-                        ),
-                      ),
-                      child: Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: Center(
-                          child: Text(
-                            wallpaperList![index].categoryName,
-                            style: GoogleFonts.lato(
-                                textStyle:
-                                    Theme.of(context).textTheme.bodyLarge),
+              return ScrollConfiguration(
+                  behavior: WindowsScrollBehaviour(),
+                  child: ListView.builder(
+                    shrinkWrap: true,
+                    scrollDirection: Axis.horizontal,
+                    itemCount: wallpaperList?.length ?? 0,
+                    itemBuilder: (context, index) {
+                      return GestureDetector(
+                        onTap: () => {
+                          // Navigate to the DetailScreen using MaterialPageRoute
+                          AppRoutes.onWallpaerCategoryPressed(
+                              context, 1, wallpaperList![index].categoryName)
+                        },
+                        child: Card(
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(
+                                4.0), // Adjust the radius as needed
+                            side: const BorderSide(
+                              width: 0.5, // Specify the border width
+                            ),
+                          ),
+                          child: Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: Center(
+                              child: Text(
+                                wallpaperList![index].categoryName,
+                                style: GoogleFonts.lato(
+                                    textStyle:
+                                        Theme.of(context).textTheme.bodyLarge),
+                              ),
+                            ),
                           ),
                         ),
-                      ),
-                    ),
-                  );
-                },
-              );
+                      );
+                    },
+                  ));
             } else {
               return const Text('No wallpapers available.');
             }

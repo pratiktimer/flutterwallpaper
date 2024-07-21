@@ -3,6 +3,7 @@ import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:flutterwallpaper/core/resources/data_state.dart';
 import 'package:flutterwallpaper/domain/entities/category.dart';
 import 'package:flutterwallpaper/presentation/providers/wallpaper_repository_provider.dart';
+import 'package:flutterwallpaper/presentation/windows_scroll_behaviour.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:transparent_image/transparent_image.dart';
@@ -33,50 +34,54 @@ class CategoryContainer extends HookConsumerWidget {
             if (snapshot.data?.data != null) {
               final wallpaperList = snapshot.data!.data;
               // Use the wallpaperList to build your UI
-              return GridView.builder(
-                scrollDirection: Axis.vertical,
-                itemCount: wallpaperList?.length ?? 0,
-                itemBuilder: (context, index) {
-                  return Padding(
-                    padding: const EdgeInsets.all(0.0),
-                    child: GestureDetector(
-                      onTap: () => {
-                        // Navigate to the DetailScreen using MaterialPageRoute
-                        AppRoutes.onWallpaerCategoryPressed(
-                            context, 1, wallpaperList![index].categoryName)
-                      },
-                      child: Card(
-                        child: Row(
-                          children: [
-                            ClipRRect(
-                              borderRadius: BorderRadius.circular(6),
-                              child: FadeInImage.memoryNetwork(
-                                width: 80,
-                                placeholder: kTransparentImage,
-                                image: wallpaperList![index].imageUrl,
-                                fit: BoxFit.cover,
-                              ),
+              return ScrollConfiguration(
+                  behavior: WindowsScrollBehaviour(),
+                  child: GridView.builder(
+                    scrollDirection: Axis.vertical,
+                    itemCount: wallpaperList?.length ?? 0,
+                    itemBuilder: (context, index) {
+                      return Padding(
+                        padding: const EdgeInsets.all(0.0),
+                        child: GestureDetector(
+                          onTap: () => {
+                            // Navigate to the DetailScreen using MaterialPageRoute
+                            AppRoutes.onWallpaerCategoryPressed(
+                                context, 1, wallpaperList![index].categoryName)
+                          },
+                          child: Card(
+                            child: Row(
+                              children: [
+                                ClipRRect(
+                                  borderRadius: BorderRadius.circular(6),
+                                  child: FadeInImage.memoryNetwork(
+                                    width: 80,
+                                    placeholder: kTransparentImage,
+                                    image: wallpaperList![index].imageUrl,
+                                    fit: BoxFit.cover,
+                                  ),
+                                ),
+                                const SizedBox(
+                                  width: 10,
+                                ),
+                                Expanded(
+                                  child: Text(
+                                    wallpaperList![index].categoryName,
+                                    style: GoogleFonts.aDLaMDisplay(
+                                        textStyle: Theme.of(context)
+                                            .textTheme
+                                            .bodyMedium),
+                                  ),
+                                )
+                              ],
                             ),
-                            const SizedBox(
-                              width: 10,
-                            ),
-                            Expanded(
-                              child: Text(
-                                wallpaperList![index].categoryName,
-                                style: GoogleFonts.aDLaMDisplay(
-                                    textStyle:
-                                        Theme.of(context).textTheme.bodyMedium),
-                              ),
-                            )
-                          ],
+                          ),
                         ),
-                      ),
-                    ),
-                  );
-                },
-                gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                    mainAxisExtent: 70, crossAxisCount: 2),
-              );
+                      );
+                    },
+                    gridDelegate:
+                        const SliverGridDelegateWithFixedCrossAxisCount(
+                            mainAxisExtent: 70, crossAxisCount: 2),
+                  ));
             } else {
               return const Text('No wallpapers available.');
             }

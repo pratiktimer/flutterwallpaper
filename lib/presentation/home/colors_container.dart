@@ -7,6 +7,7 @@ import 'package:flutterwallpaper/core/resources/data_state.dart';
 import 'package:flutterwallpaper/core/util/color_converter.dart';
 import 'package:flutterwallpaper/presentation/home/wallpapers_page.dart';
 import 'package:flutterwallpaper/presentation/providers/wallpaper_repository_provider.dart';
+import 'package:flutterwallpaper/presentation/windows_scroll_behaviour.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 import '../../domain/entities/color_category.dart';
@@ -38,35 +39,37 @@ class ColorsConatiner extends HookConsumerWidget {
             if (snapshot.data?.data != null) {
               final wallpaperList = snapshot.data!.data;
               // Use the wallpaperList to build your UI
-              return MasonryGridView.count(
-                crossAxisCount: Device.get().isTablet ? 2 : 1,
-                mainAxisSpacing: Device.get().isTablet ? 2 : 1,
-                crossAxisSpacing: Device.get().isTablet ? 2 : 1,
-                shrinkWrap: true,
-                scrollDirection: Axis.horizontal,
-                itemCount: wallpaperList?.length ?? 0,
-                itemBuilder: (context, index) {
-                  return Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: GestureDetector(
-                      onTap: () => {
-                        // Navigate to the DetailScreen using MaterialPageRoute
-                        AppRoutes.onWallpaerCategoryPressed(
-                            context, 1, wallpaperList![index].categoryName)
-                      },
-                      child: Container(
-                        decoration: BoxDecoration(
-                          color: wallpaperList?[index].hexValue.toColor(),
-                          borderRadius:
-                              BorderRadius.circular(15), // Rounded corners
+              return ScrollConfiguration(
+                  behavior: WindowsScrollBehaviour(),
+                  child: MasonryGridView.count(
+                    crossAxisCount: Device.get().isTablet ? 2 : 1,
+                    mainAxisSpacing: Device.get().isTablet ? 2 : 1,
+                    crossAxisSpacing: Device.get().isTablet ? 2 : 1,
+                    shrinkWrap: true,
+                    scrollDirection: Axis.horizontal,
+                    itemCount: wallpaperList?.length ?? 0,
+                    itemBuilder: (context, index) {
+                      return Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: GestureDetector(
+                          onTap: () => {
+                            // Navigate to the DetailScreen using MaterialPageRoute
+                            AppRoutes.onWallpaerCategoryPressed(
+                                context, 1, wallpaperList![index].categoryName)
+                          },
+                          child: Container(
+                            decoration: BoxDecoration(
+                              color: wallpaperList?[index].hexValue.toColor(),
+                              borderRadius:
+                                  BorderRadius.circular(15), // Rounded corners
+                            ),
+                            width: 60,
+                            height: 60,
+                          ),
                         ),
-                        width: 60,
-                        height: 60,
-                      ),
-                    ),
-                  );
-                },
-              );
+                      );
+                    },
+                  ));
             } else {
               return const Text('No wallpapers available.');
             }

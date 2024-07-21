@@ -10,6 +10,7 @@ import 'package:flutterwallpaper/presentation/developer/developer_page.dart';
 import 'package:flutterwallpaper/presentation/home/category_name_container.dart';
 import 'package:flutterwallpaper/presentation/home/colors_container.dart';
 import 'package:flutterwallpaper/presentation/home/image_color_conatiner.dart';
+import 'package:flutterwallpaper/presentation/windows_scroll_behaviour.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:launch_review/launch_review.dart';
 import 'package:share_plus/share_plus.dart';
@@ -35,6 +36,7 @@ class HomeApp extends HookConsumerWidget {
     ref.watch(themeProvider).getSelectedThemeMode();
     DatabaseUtils.getAppDatabase(ref);
     return MaterialApp(
+      scrollBehavior: WindowsScrollBehaviour(),
       themeMode: ref.watch(themeProvider).selectedThemeMode,
       debugShowCheckedModeBanner: false,
       theme: buildLightTheme(),
@@ -53,50 +55,59 @@ class WallpaerHomePage extends HookConsumerWidget {
     return WillPopScope(
       onWillPop: () => _onBackPress(context),
       child: Scaffold(
-          body: CustomScrollView(
-        slivers: [
-          SliverAppBar(
-            floating: true,
-            snap: true,
-            //expandedHeight: 200,
-            actions: [
-              IconButton(
-                icon: const Icon(
-                  Icons.favorite,
-                  color: Colors.red,
-                ),
-                onPressed: () {
-                  // Handle onPressed for the info icon
-                  AppRoutes.onFavPressed(context, 1, "");
-                },
-              ),
-              IconButton(
-                icon: const Icon(Icons.track_changes_rounded),
-                onPressed: () {
-                  ref.watch(themeProvider).setSelectedThemeMode();
-                },
-              ),
+          body: CustomScrollView(slivers: [
+        SliverAppBar(
+          // backgroundColor: Colors.black.withOpacity(0.5),
+          floating: true, // Set to false to allow the app bar to collapse
+          pinned: true,
+          snap: true, // Set to false to avoid snapping
+          stretch: true,
+          expandedHeight: 200,
+          flexibleSpace: const FlexibleSpaceBar(
+            stretchModes: [
+              StretchMode.blurBackground,
+              StretchMode.blurBackground
             ],
+            background: Column(
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: [
+                CategoryNamesContainer(),
+                SizedBox(height: 10),
+                ColorsConatiner(),
+              ],
+            ),
           ),
-          SliverList.list(
-            children: const [
-              CategoryNamesContainer(),
-              SizedBox(
-                height: 10,
+          actions: [
+            IconButton(
+              icon: const Icon(
+                Icons.favorite,
+                color: Colors.red,
               ),
-              ColorsConatiner(),
-              SizedBox(
-                height: 10,
-              ),
-              ImageColorConatiner(),
-              SizedBox(
-                height: 10,
-              ),
-              CategoryContainer()
-            ],
-          )
-        ],
-      )),
+              onPressed: () {
+                // Handle onPressed for the info icon
+                AppRoutes.onFavPressed(context, 1, "");
+              },
+            ),
+            IconButton(
+              icon: const Icon(Icons.track_changes_rounded),
+              onPressed: () {
+                ref.watch(themeProvider).setSelectedThemeMode();
+              },
+            ),
+          ],
+        ),
+        SliverList(
+            delegate: SliverChildListDelegate(
+          const [
+            SizedBox(height: 10),
+            ImageColorConatiner(),
+            SizedBox(
+              height: 10,
+            ),
+            CategoryContainer()
+          ],
+        )),
+      ])),
     );
   }
 

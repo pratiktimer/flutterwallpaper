@@ -6,6 +6,7 @@ import 'package:flutterwallpaper/core/util/color_converter.dart';
 import 'package:flutterwallpaper/domain/entities/image_color_category.dart';
 import 'package:flutterwallpaper/presentation/home/wallpapers_page.dart';
 import 'package:flutterwallpaper/presentation/providers/wallpaper_repository_provider.dart';
+import 'package:flutterwallpaper/presentation/windows_scroll_behaviour.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:transparent_image/transparent_image.dart';
@@ -36,38 +37,41 @@ class ImageColorConatiner extends HookConsumerWidget {
             if (snapshot.data?.data != null) {
               final wallpaperList = snapshot.data!.data;
               // Use the wallpaperList to build your UI
-              return MasonryGridView.count(
-                crossAxisCount: Device.get().isTablet ? 2 : 1,
-                mainAxisSpacing: Device.get().isTablet ? 2 : 1,
-                crossAxisSpacing: Device.get().isTablet ? 2 : 1,
-                scrollDirection: Axis.horizontal,
-                itemCount: wallpaperList?.length ?? 0,
-                itemBuilder: (context, index) {
-                  return GestureDetector(
-                    onTap: () => {
-                      // Navigate to the DetailScreen using MaterialPageRoute
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (_) => WallaperListPage(
-                                page: 1,
-                                category:
-                                    wallpaperList![index].name ?? "Biker"),
-                          )),
+              return ScrollConfiguration(
+                  behavior: WindowsScrollBehaviour(),
+                  child: MasonryGridView.count(
+                    crossAxisCount: Device.get().isTablet ? 2 : 1,
+                    mainAxisSpacing: Device.get().isTablet ? 2 : 1,
+                    crossAxisSpacing: Device.get().isTablet ? 2 : 1,
+                    scrollDirection: Axis.horizontal,
+                    itemCount: wallpaperList?.length ?? 0,
+                    itemBuilder: (context, index) {
+                      return GestureDetector(
+                        onTap: () => {
+                          // Navigate to the DetailScreen using MaterialPageRoute
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (_) => WallaperListPage(
+                                    page: 1,
+                                    category:
+                                        wallpaperList![index].name ?? "Biker"),
+                              )),
+                        },
+                        child: SizedBox(
+                          width: 140,
+                          height: 200,
+                          child: ColorCardWithImage(
+                            imageUrl: wallpaperList![index].defaultUrl,
+                            cardColor:
+                                wallpaperList[index].hexValue.toColor() ??
+                                    Colors.white,
+                            cardName: wallpaperList![index].categoryName,
+                          ),
+                        ),
+                      );
                     },
-                    child: SizedBox(
-                      width: 140,
-                      height: 200,
-                      child: ColorCardWithImage(
-                        imageUrl: wallpaperList![index].defaultUrl,
-                        cardColor: wallpaperList[index].hexValue.toColor() ??
-                            Colors.white,
-                        cardName: wallpaperList![index].categoryName,
-                      ),
-                    ),
-                  );
-                },
-              );
+                  ));
             } else {
               return const Text('No wallpapers available.');
             }
