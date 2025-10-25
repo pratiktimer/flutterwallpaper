@@ -40,7 +40,7 @@ dependencies:
   cached_network_image: ^3.2.3
   cupertino_icons: ^1.0.2
   json_annotation: ^4.8.1
-  retrofit_generator: ^9.1.9
+  retrofit_generator: ^8.2.1
   ionicons: ^0.2.2
   cloud_firestore: ^5.1.0
   hooks_riverpod: ^2.3.2
