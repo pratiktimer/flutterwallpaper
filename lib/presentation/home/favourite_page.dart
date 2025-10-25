@@ -1,13 +1,13 @@
-import 'package:flare_flutter/flare_actor.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:rive/rive.dart';
 import 'package:transparent_image/transparent_image.dart';
 
 import 'package:flutterwallpaper/presentation/providers/favourite_controller.dart';
 import 'package:flutterwallpaper/presentation/widgets/wallpaper_clipper.dart';
-import '../../config/theme/routes/routes.dart';
+import '../../config/routes/routes.dart';
 
 class FavListPage extends HookConsumerWidget {
   FavListPage({Key? key});
@@ -60,8 +60,11 @@ class FavListPage extends HookConsumerWidget {
                 margin: const EdgeInsets.only(bottom: 30),
                 child: const Hero(
                     tag: "mytry",
-                    child: FlareActor("assets/Broken Heart.flr",
-                        animation: "Heart Break", shouldClip: false))),
+                    child: RiveAnimation.asset(
+                      "assets/Broken Heart.riv",
+                      alignment: Alignment.center,
+                      fit: BoxFit.cover,
+                    ))),
             Container(
               padding: const EdgeInsets.only(bottom: 21),
               width: 250,

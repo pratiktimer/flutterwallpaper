@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutterwallpaper/presentation/providers/favourite_controller.dart';
 import 'package:flutterwallpaper/presentation/providers/wallpaper_list_notifier.dart';
@@ -117,69 +118,79 @@ class WallaperDetailState extends ConsumerState<WallaperDetailPage> {
                         ),
                       ),
                     ),
-                    Align(
-                      alignment: const Alignment(1.0, 0.4),
-                      child: FloatingActionButton(
-                        heroTag: "one1",
-                        backgroundColor:
-                            const Color(0xFF010101).withOpacity(0.5),
-                        onPressed: () async {
-                          return await dowloadImage(
-                              WallpaperType.Home,
-                              context,
-                              wallpaperList[index].potrait ??
-                                  wallpaperList[index].large!);
-                        },
-                        tooltip: 'Set Home Screen',
-                        child: const Icon(
-                          // Add the lines from here...
-                          Icons.home_filled,
-                          color: Colors.white,
-                        ),
-                      ),
-                    ),
-                    Align(
-                      alignment: const Alignment(1.0, 0.6),
-                      child: FloatingActionButton(
-                        heroTag: "two2",
-                        backgroundColor:
-                            const Color(0xFF010101).withOpacity(0.5),
-                        onPressed: () async {
-                          return await dowloadImage(
-                              WallpaperType.Lock,
-                              context,
-                              wallpaperList[index].potrait ??
-                                  wallpaperList[index].large!);
-                        },
-                        tooltip: 'Set Lock Screen',
-                        child: const Icon(
-                          // Add the lines from here...
-                          Icons.lock,
-                          color: Colors.white,
-                        ),
-                      ),
-                    ),
-                    Align(
-                      alignment: const Alignment(1.0, 0.8),
-                      child: FloatingActionButton(
-                        heroTag: "three3",
-                        backgroundColor:
-                            const Color(0xFF010101).withOpacity(0.5),
-                        onPressed: () async {
-                          return await dowloadImage(
-                              WallpaperType.Both,
-                              context,
-                              wallpaperList[index].potrait ??
-                                  wallpaperList[index].large!);
-                        },
-                        tooltip: 'Set Lock Screen',
-                        child: const Icon(
-                          // Add the lines from here...
-                          Icons.wallpaper,
-                          color: Colors.white,
-                        ),
-                      ),
-                    ),
+                    // Inside your widget tree:
+                    !kIsWeb
+                        ? Align(
+                            alignment: const Alignment(1.0, 0.4),
+                            child: FloatingActionButton(
+                              heroTag: "one1",
+                              backgroundColor:
+                                  const Color(0xFF010101).withOpacity(0.5),
+                              onPressed: () async {
+                                return await dowloadImage(
+                                  WallpaperType.Home,
+                                  context,
+                                  wallpaperList[index].potrait ??
+                                      wallpaperList[index].large!,
+                                );
+                              },
+                              tooltip: 'Set Home Screen',
+                              child: const Icon(
+                                Icons.home_filled,
+                                color: Colors.white,
+                              ),
+                            ),
+                          )
+                        : const SizedBox
+                            .shrink(), // Return an empty widget if on Web
+                    !kIsWeb
+                        ? Align(
+                            alignment: const Alignment(1.0, 0.6),
+                            child: FloatingActionButton(
+                              heroTag: "two2",
+                              backgroundColor:
+                                  const Color(0xFF010101).withOpacity(0.5),
+                              onPressed: () async {
+                                return await dowloadImage(
+                                    WallpaperType.Lock,
+                                    context,
+                                    wallpaperList[index].potrait ??
+                                        wallpaperList[index].large!);
+                              },
+                              tooltip: 'Set Lock Screen',
+                              child: const Icon(
+                                // Add the lines from here...
+                                Icons.lock,
+                                color: Colors.white,
+                              ),
+                            ),
+                          )
+                        : const SizedBox
+                            .shrink(), // Return an empty widget if on Web,
+                    !kIsWeb
+                        ? Align(
+                            alignment: const Alignment(1.0, 0.8),
+                            child: FloatingActionButton(
+                              heroTag: "three3",
+                              backgroundColor:
+                                  const Color(0xFF010101).withOpacity(0.5),
+                              onPressed: () async {
+                                return await dowloadImage(
+                                    WallpaperType.Both,
+                                    context,
+                                    wallpaperList[index].potrait ??
+                                        wallpaperList[index].large!);
+                              },
+                              tooltip: 'Set Lock Screen',
+                              child: const Icon(
+                                // Add the lines from here...
+                                Icons.wallpaper,
+                                color: Colors.white,
+                              ),
+                            ),
+                          )
+                        : const SizedBox
+                            .shrink(), // Return an empty widget if on Web,
                     Align(
                       alignment: const Alignment(1.0, 1),
                       child: FloatingActionButton(

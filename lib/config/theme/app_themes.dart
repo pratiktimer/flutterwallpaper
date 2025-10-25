@@ -4,7 +4,8 @@ ThemeData buildLightTheme() {
   final ThemeData base =
       ThemeData(useMaterial3: true, colorScheme: lightColorScheme);
   return base.copyWith(
-    cardTheme: const CardTheme(shape: BeveledRectangleBorder(), elevation: 4),
+    cardTheme:
+        const CardThemeData(shape: BeveledRectangleBorder(), elevation: 4),
     iconTheme: base.iconTheme.copyWith(
       color: Colors.black,
     ),
@@ -23,7 +24,7 @@ ThemeData buildDarkTheme() {
   final ThemeData base =
       ThemeData(useMaterial3: true, colorScheme: darkColorScheme);
   return base.copyWith(
-    cardTheme: const CardTheme(
+    cardTheme: const CardThemeData(
         shape: BeveledRectangleBorder(),
 
         //shadowColor: Colors.white,

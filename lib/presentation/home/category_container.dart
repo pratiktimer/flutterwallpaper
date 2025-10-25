@@ -8,7 +8,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:transparent_image/transparent_image.dart';
 
-import '../../config/theme/routes/routes.dart';
+import '../../config/routes/routes.dart';
 
 class CategoryContainer extends HookConsumerWidget {
   const CategoryContainer({key});

@@ -9,7 +9,7 @@ import 'package:flutterwallpaper/presentation/windows_scroll_behaviour.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
-import '../../config/theme/routes/routes.dart';
+import '../../config/routes/routes.dart';
 
 class CategoryNamesContainer extends HookConsumerWidget {
   const CategoryNamesContainer({key});
@@ -21,6 +21,8 @@ class CategoryNamesContainer extends HookConsumerWidget {
     // Call the fetchWallpapers method to retrieve the data from the repository
     // For example, you can use FutureBuilder or StreamBuilder to handle the async operation
     return SizedBox(
+      width: double.infinity, // Ensure the ListView can take up available width
+
       height: 50,
       child: FutureBuilder<DataState<List<CategoryNameEntity>>>(
         future: wallpaperRepository.fetchNameCategories(),

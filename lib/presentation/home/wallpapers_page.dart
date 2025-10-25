@@ -10,7 +10,7 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:transparent_image/transparent_image.dart';
 
-import '../../config/theme/routes/routes.dart';
+import '../../config/routes/routes.dart';
 
 class WallaperListPage extends HookConsumerWidget {
   final int page;

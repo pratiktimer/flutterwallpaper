@@ -2,7 +2,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutterwallpaper/config/theme/routes/routes.dart';
+import 'package:flutterwallpaper/config/routes/routes.dart';
 import 'package:flutterwallpaper/core/util/db_utils.dart';
 import 'package:flutterwallpaper/firebase_options.dart';
 import 'package:flutterwallpaper/injection_container.dart';
@@ -12,7 +12,7 @@ import 'package:flutterwallpaper/presentation/home/colors_container.dart';
 import 'package:flutterwallpaper/presentation/home/image_color_conatiner.dart';
 import 'package:flutterwallpaper/presentation/windows_scroll_behaviour.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:launch_review/launch_review.dart';
+import 'package:store_redirect/store_redirect.dart';
 import 'package:share_plus/share_plus.dart';
 import 'config/theme/app_themes.dart';
 import 'presentation/home/category_container.dart';
@@ -130,7 +130,7 @@ class WallpaerHomePage extends HookConsumerWidget {
                     child: const Text("Review now on Playstore"),
                     onPressed: () {
                       Navigator.pop(context);
-                      LaunchReview.launch();
+                      StoreRedirect.redirect(androidAppId: "com.prateektimer.flutterwallpaper");
                     }),
                 CupertinoActionSheetAction(
                   child: const Text("Connect with the Developer"),

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
-import 'package:flutterwallpaper/config/theme/routes/routes.dart';
+import 'package:flutterwallpaper/config/routes/routes.dart';
 import 'package:flutterwallpaper/presentation/providers/favourite_controller.dart';
 import 'package:flutterwallpaper/presentation/widgets/wallpaper_clipper.dart';
 

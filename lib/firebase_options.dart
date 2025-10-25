@@ -27,10 +27,7 @@ class DefaultFirebaseOptions {
       case TargetPlatform.macOS:
         return macos;
       case TargetPlatform.windows:
-        throw UnsupportedError(
-          'DefaultFirebaseOptions have not been configured for windows - '
-          'you can reconfigure this by running the FlutterFire CLI again.',
-        );
+        return windows;
       case TargetPlatform.linux:
         throw UnsupportedError(
           'DefaultFirebaseOptions have not been configured for linux - '
@@ -77,13 +74,25 @@ class DefaultFirebaseOptions {
 
   static const FirebaseOptions macos = FirebaseOptions(
     apiKey: 'AIzaSyA6TBh5-nb_4xU0SI4w7qX09cLtO43D2Hw',
-    appId: '1:1049973497665:ios:7861730fea328e616a0bc0',
+    appId: '1:1049973497665:ios:3fba01fa35ea4b396a0bc0',
     messagingSenderId: '1049973497665',
     projectId: 'marathiaarti-125c8',
     databaseURL: 'https://marathiaarti-125c8.firebaseio.com',
     storageBucket: 'marathiaarti-125c8.appspot.com',
     androidClientId: '1049973497665-cgnlh0kh0mv7jrj3rsvpe12d298uugoj.apps.googleusercontent.com',
-    iosClientId: '1049973497665-6ihikqlffm9pfu4co507u45v5l51libr.apps.googleusercontent.com',
-    iosBundleId: 'com.prateektimer.flutterwallpaper.RunnerTests',
+    iosClientId: '1049973497665-dpfgms25h77hea9anu8fg55a32gsa443.apps.googleusercontent.com',
+    iosBundleId: 'com.prateektimer.flutterwallpaper',
   );
+
+  static const FirebaseOptions windows = FirebaseOptions(
+    apiKey: 'AIzaSyAx3MAfiT2JgfLVN6li0rDwWcljyMEy4kg',
+    appId: '1:1049973497665:web:ca0f6693d0f3309d6a0bc0',
+    messagingSenderId: '1049973497665',
+    projectId: 'marathiaarti-125c8',
+    authDomain: 'marathiaarti-125c8.firebaseapp.com',
+    databaseURL: 'https://marathiaarti-125c8.firebaseio.com',
+    storageBucket: 'marathiaarti-125c8.appspot.com',
+    measurementId: 'G-PRFVX2VWT3',
+  );
+
 }
