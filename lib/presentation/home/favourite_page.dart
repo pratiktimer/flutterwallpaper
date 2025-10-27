@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:rive/rive.dart';
 import 'package:transparent_image/transparent_image.dart';
 
 import 'package:flutterwallpaper/presentation/providers/favourite_controller.dart';
@@ -60,11 +59,7 @@ class FavListPage extends HookConsumerWidget {
                 margin: const EdgeInsets.only(bottom: 30),
                 child: const Hero(
                     tag: "mytry",
-                    child: RiveAnimation.asset(
-                      "assets/Broken Heart.riv",
-                      alignment: Alignment.center,
-                      fit: BoxFit.cover,
-                    ))),
+                    child: Icon(Icons.favorite))),
             Container(
               padding: const EdgeInsets.only(bottom: 21),
               width: 250,

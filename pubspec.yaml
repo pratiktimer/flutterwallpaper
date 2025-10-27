@@ -58,7 +58,6 @@ dependencies:
   transparent_image: ^2.0.1
   shared_preferences: ^2.0.6
   google_fonts: ^6.1.0
-  rive: ^0.13.20
   sqflite_common_ffi_web: ^1.0.0
   
   # The following adds the Cupertino Icons font to your application.
